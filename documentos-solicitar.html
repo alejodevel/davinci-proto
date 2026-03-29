@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Solicitar Documento — Da Vinci School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark:#0C2D3D;--dark2:#081E2A;--red:#FF0204;--red2:#CC0103;
+  --blue:#208AAE;--blue2:#1A6F8C;--cream:#F8F2DC;--gray:#706566;
+  --glt:#A09899;--white:#FFFFFF;--off:#FAFAF8;--rule:#E8E2D0;
+  --lora:'Lora',Georgia,serif;--mont:'Montserrat',sans-serif;
+  --nav:56px;--tab:60px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--mont);background:var(--off);color:var(--dark);overflow-x:hidden;-webkit-text-size-adjust:100%;padding-bottom:var(--tab);padding-top:var(--nav);}
+img{display:block;max-width:100%;height:auto;}
+.c{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,48px);}
+
+/* ── ANNOUNCE ── */
+.announce-bar{position:fixed;top:0;left:0;right:0;z-index:790;background:var(--blue);padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;font-weight:600;color:white;}
+.announce-bar a{color:white;text-decoration:underline;text-underline-offset:2px;}
+.announce-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;padding:4px;}
+.announce-dot{width:6px;height:6px;background:var(--cream);border-radius:50%;flex-shrink:0;animation:blinkAnn 2s ease-in-out infinite;}
+@keyframes blinkAnn{0%,100%{opacity:.8;}50%{opacity:.3;}}
+body.has-announce{--ah:34px;}
+body.has-announce .mob-topbar,body.has-announce .desk-nav{top:var(--ah);}
+body.has-announce{padding-top:calc(var(--nav) + var(--ah));}
+
+/* ── NAV ── */
+.mob-topbar{position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 clamp(16px,4vw,20px);gap:10px;}
+@media(min-width:960px){.mob-topbar{display:none;}}
+.logo-txt,.nav-logo-txt{font-family:var(--lora);font-size:15px;font-weight:600;color:white !important;line-height:1.15;}
+.logo-txt span,.nav-logo-txt span{display:block;font-size:9px;font-weight:400;color:rgba(255,255,255,.38) !important;font-family:var(--mont);letter-spacing:1.5px;text-transform:uppercase;}
+.desk-nav{display:none;position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);align-items:center;}
+.desk-nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:3px;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nav-links a:hover{color:white;}.nav-links a:hover::after{transform:scaleX(1);}
+.nav-links a.active{color:white;}.nav-links a.active::after{transform:scaleX(1);background:var(--red);}
+.nav-cta-d{background:var(--red);color:white;padding:8px 18px;border-radius:3px;font-family:var(--mont);font-size:11px;font-weight:700;text-decoration:none;letter-spacing:.3px;transition:all .2s;flex-shrink:0;}
+.nav-cta-d:hover{background:var(--red2);box-shadow:0 4px 16px rgba(255,2,4,.4);transform:translateY(-1px);}
+.desk-nav a{color:white !important;text-decoration:none;}
+@media(min-width:960px){.desk-nav{display:flex;}body{padding-bottom:0;}}
+
+/* ── TAB BAR ── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:800;height:var(--tab);background:rgba(10,26,37,.98);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.1);padding-bottom:env(safe-area-inset-bottom,0);}
+.tab-items{display:flex;align-items:stretch;height:100%;width:100%;}
+.ti{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:rgba(255,255,255,.4);font-size:9px;font-weight:600;letter-spacing:.2px;text-transform:uppercase;padding:4px 0;border:none;background:none;-webkit-tap-highlight-color:transparent;transition:color .15s;min-width:0;}
+.ti svg{width:18px;height:18px;flex-shrink:0;}
+.ti span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;padding:0 2px;}
+.ti:active{color:rgba(255,255,255,.85);}.ti:hover:not(.ti-cta){color:var(--blue);}
+.ti-cta{flex:1.5;background:var(--red);color:white !important;border-radius:12px 12px 0 0;margin:0 4px;box-shadow:0 -4px 20px rgba(255,2,4,.4);font-size:9px;font-weight:700;}
+.ti-cta svg{width:20px;height:20px;}
+@media(min-width:960px){.tab-bar{display:none;}}
+
+/* ── PAGE CONTENT ── */
+.page-wrap{padding:clamp(32px,6vw,64px) 0;}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:500;color:var(--glt);text-transform:uppercase;letter-spacing:1px;margin-bottom:28px;}
+.breadcrumb a{color:var(--glt);text-decoration:none;transition:color .2s;}.breadcrumb a:hover{color:var(--blue);}
+.breadcrumb span{color:var(--rule);}
+
+.page-layout{display:flex;flex-direction:column;gap:28px;}
+@media(min-width:960px){.page-layout{flex-direction:row;gap:40px;align-items:flex-start;}}
+
+/* Form card */
+.form-card{background:var(--white);border-radius:8px;padding:clamp(24px,4vw,40px);border:1px solid var(--rule);flex:1;min-width:0;}
+.form-card-title{font-family:var(--lora);font-size:clamp(20px,3vw,28px);font-weight:600;color:var(--dark);margin-bottom:6px;}
+.form-card-title em{font-style:italic;color:var(--blue);}
+.form-card-sub{font-size:13px;color:var(--gray);font-weight:300;line-height:1.7;margin-bottom:28px;}
+
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:16px;}
+.fg label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dark);}
+.fg input,.fg select,.fg textarea{padding:10px 14px;border:1px solid var(--rule);border-radius:4px;font-family:var(--mont);font-size:13px;color:var(--dark);background:var(--white);outline:none;transition:border-color .2s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--blue);}
+.fg textarea{min-height:80px;resize:vertical;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:420px){.fg-row{grid-template-columns:1fr;}}
+
+.doc-types{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:16px;}
+@media(min-width:480px){.doc-types{grid-template-columns:1fr 1fr;}}
+.doc-type-opt{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid var(--rule);border-radius:4px;cursor:pointer;transition:all .2s;}
+.doc-type-opt:hover{border-color:var(--blue);background:rgba(32,138,174,.04);}
+.doc-type-opt input[type="checkbox"]{width:15px;height:15px;accent-color:var(--blue);flex-shrink:0;margin-top:2px;}
+.doc-type-opt-text strong{display:block;font-size:12px;font-weight:600;color:var(--dark);}
+.doc-type-opt-text span{font-size:10px;color:var(--gray);font-weight:300;}
+
+.btn-submit{width:100%;padding:14px;background:var(--red);color:white;border:none;border-radius:4px;font-family:var(--mont);font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.3px;margin-top:8px;}
+.btn-submit:hover{background:var(--red2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,2,4,.35);}
+.form-note{font-size:10px;color:var(--glt);margin-top:12px;line-height:1.6;text-align:center;}
+
+/* Info sidebar */
+.info-sidebar{flex-shrink:0;}
+@media(min-width:960px){.info-sidebar{width:280px;position:sticky;top:calc(var(--nav) + 24px);}}
+
+.info-card{background:var(--white);border-radius:8px;padding:24px;border:1px solid var(--rule);margin-bottom:16px;}
+.info-card h4{font-family:var(--lora);font-size:15px;font-weight:600;color:var(--dark);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--rule);}
+.info-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;}
+.info-item:last-child{margin-bottom:0;}
+.info-icon{width:32px;height:32px;background:var(--off);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.info-item strong{font-size:12px;font-weight:600;display:block;color:var(--dark);margin-bottom:2px;}
+.info-item span{font-size:11px;color:var(--gray);font-weight:300;line-height:1.5;}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;transition:gap .2s;}
+.back-link:hover{gap:10px;}
+
+/* ── FOOTER ── */
+footer{background:#060E13;padding:36px 0 20px;}
+.foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.06);}
+@media(min-width:640px){.foot-grid{grid-template-columns:2fr 1fr 1fr 1fr;}}
+.fb p{font-size:11px;color:rgba(255,255,255,.28);font-weight:300;line-height:1.8;margin-top:12px;max-width:200px;}
+.fc h5{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.fc a{font-size:11px;color:rgba(255,255,255,.3);text-decoration:none;font-weight:300;transition:color .2s;}
+.fc a:hover{color:white;}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:16px;flex-wrap:wrap;gap:8px;}
+.foot-bot p{font-size:10px;color:rgba(255,255,255,.18);}
+.foot-bot a{color:rgba(32,138,174,.4);text-decoration:none;}
+.wa{position:fixed;z-index:700;width:50px;height:50px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s;bottom:calc(var(--tab) + 16px);right:16px;}
+@media(min-width:960px){.wa{bottom:24px;right:20px;}}
+.wa:hover{transform:scale(1.1);}
+.wa svg{width:22px;height:22px;}
+</style>
+</head>
+<body class="has-announce">
+
+<div class="announce-bar" id="announceBar">
+  <div class="announce-dot"></div>
+  <span>📅 &nbsp;Período de postulación SAE 2026 abierto &mdash; <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank">Postula aquí →</a></span>
+  <button class="announce-close" onclick="document.getElementById('announceBar').remove();document.body.classList.remove('has-announce');" aria-label="Cerrar">×</button>
+</div>
+
+<header class="mob-topbar">
+  <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+    <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+  </a>
+</header>
+
+<nav class="desk-nav">
+  <div class="c desk-nav-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+      <div class="nav-logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="admisiones.html">Admisiones</a></li>
+      <li><a href="noticias.html">Noticias</a></li>
+      <li><a href="documentos.html" class="active">Documentos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="admisiones.html" class="nav-cta-d">Inscribir a mi hijo</a>
+  </div>
+</nav>
+
+<div class="tab-bar">
+  <div class="tab-items">
+    <a href="index.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></a>
+    <a href="noticias.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"/><line x1="17" y1="12" x2="7" y2="12"/></svg><span>Noticias</span></a>
+    <a href="admisiones.html" class="ti ti-cta"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg><span>Inscribir</span></a>
+    <a href="documentos.html" class="ti" style="color:rgba(255,255,255,.85);"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Docs</span></a>
+    <a href="contacto.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Contacto</span></a>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="page-wrap">
+  <div class="c">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a><span>›</span>
+      <a href="documentos.html">Documentos</a><span>›</span>
+      <span style="color:var(--dark);">Solicitar documento</span>
+    </div>
+
+    <div class="page-layout">
+
+      <!-- FORM -->
+      <div class="form-card">
+        <h1 class="form-card-title">Solicitud de <em>documento oficial</em></h1>
+        <p class="form-card-sub">Completa el formulario para solicitar certificados y documentos oficiales. El colegio procesará tu solicitud en un plazo de 3 a 5 días hábiles.</p>
+
+        <div class="fg-row">
+          <div class="fg"><label>Nombre del apoderado</label><input type="text" placeholder="Tu nombre completo"></div>
+          <div class="fg"><label>RUT apoderado</label><input type="text" placeholder="12.345.678-9"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tucorreo@mail.com"></div>
+          <div class="fg"><label>Teléfono</label><input type="tel" placeholder="+56 9 XXXX XXXX"></div>
+        </div>
+
+        <div style="height:1px;background:var(--rule);margin:8px 0 20px;"></div>
+
+        <div class="fg"><label>Nombre del estudiante</label><input type="text" placeholder="Nombre completo del alumno/a"></div>
+        <div class="fg-row">
+          <div class="fg"><label>RUT estudiante</label><input type="text" placeholder="12.345.678-9"></div>
+          <div class="fg">
+            <label>Nivel actual</label>
+            <select>
+              <option value="">Selecciona el nivel</option>
+              <option>Pre-Kínder</option><option>Kínder</option>
+              <option>1° Básico</option><option>2° Básico</option><option>3° Básico</option><option>4° Básico</option>
+              <option>5° Básico</option><option>6° Básico</option><option>7° Básico</option><option>8° Básico</option>
+              <option>1° Medio</option><option>2° Medio</option><option>3° Medio</option><option>4° Medio</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="height:1px;background:var(--rule);margin:8px 0 20px;"></div>
+
+        <div class="fg"><label>Documentos solicitados (selecciona los que necesitas)</label></div>
+        <div class="doc-types">
+          <label class="doc-type-opt"><input type="checkbox"><div class="doc-type-opt-text"><strong>Certificado de alumno regular</strong><span>Acredita matrícula vigente</span></div></label>
+          <label class="doc-type-opt"><input type="checkbox"><div class="doc-type-opt-text"><strong>Concentración de notas</strong><span>Historial académico completo</span></div></label>
+          <label class="doc-type-opt"><input type="checkbox"><div class="doc-type-opt-text"><strong>Informe de personalidad</strong><span>Descripción del perfil del alumno</span></div></label>
+          <label class="doc-type-opt"><input type="checkbox"><div class="doc-type-opt-text"><strong>Certificado de notas anuales</strong><span>Calificaciones del año cursado</span></div></label>
+          <label class="doc-type-opt"><input type="checkbox"><div class="doc-type-opt-text"><strong>Licencia de Educación Media</strong><span>Solo para 4° Medio egresados</span></div></label>
+          <label class="doc-type-opt"><input type="checkbox"><div class="doc-type-opt-text"><strong>Otro documento</strong><span>Especificar en observaciones</span></div></label>
+        </div>
+
+        <div class="fg"><label>Observaciones o instrucciones especiales</label><textarea placeholder="Ej: Necesito 2 copias, o el documento es para trámite en el banco..."></textarea></div>
+
+        <button class="btn-submit" onclick="this.textContent='✓ Solicitud enviada — te contactaremos en 3-5 días hábiles';this.style.background='#2E7D52';this.disabled=true;">Enviar solicitud</button>
+        <p class="form-note">Recibirás una confirmación por correo electrónico. Para retiro presencial trae tu cédula de identidad.</p>
+      </div>
+
+      <!-- INFO SIDEBAR -->
+      <aside class="info-sidebar">
+        <div class="info-card">
+          <h4>Información importante</h4>
+          <div class="info-item">
+            <div class="info-icon">⏱️</div>
+            <div><strong>Plazo de entrega</strong><span>3 a 5 días hábiles desde la confirmación de tu solicitud.</span></div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div><strong>Retiro presencial</strong><span>Secretaría del colegio, de lunes a viernes de 8:00 a 17:00 hrs. Trae tu cédula de identidad.</span></div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📧</div>
+            <div><strong>Envío por correo</strong><span>Documentos digitales se envían al correo registrado. Documentos físicos solo retiro presencial.</span></div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">💰</div>
+            <div><strong>Costo</strong><span>La mayoría de los documentos son gratuitos. En caso de costo, se informará antes de emitir.</span></div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <h4>¿Necesitas ayuda?</h4>
+          <div class="info-item">
+            <div class="info-icon">📞</div>
+            <div><strong>Teléfono</strong><span>+56 65 2 XXX XXX<br>Lun–Vie 8:00–17:00</span></div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">✉️</div>
+            <div><strong>Correo</strong><span>secretaria&#64;davincischool&#46;cl</span></div>
+          </div>
+        </div>
+
+        <a href="documentos.html" class="back-link">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          Volver a documentos
+        </a>
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="c">
+    <div class="foot-grid">
+      <div class="fb">
+        <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+          <img src="logo-davinci.png" width="32" height="32" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+          <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+        </a>
+        <p>Formando personas íntegras, creativas y bilingües desde Pre-Básica hasta 4° Medio.</p>
+      </div>
+      <div class="fc"><h5>El colegio</h5><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="nosotros.html">Bilingüismo</a></li><li><a href="admisiones.html">Admisiones SAE</a></li></ul></div>
+      <div class="fc"><h5>Apoderados</h5><ul><li><a href="documentos.html">Boletines</a></li><li><a href="calendario.html">Calendario</a></li><li><a href="documentos.html">Circulares</a></li><li><a href="documentos-solicitar.html">Solicitar doc.</a></li></ul></div>
+      <div class="fc"><h5>Más</h5><ul><li><a href="noticias.html">Noticias</a></li><li><a href="galeria.html">Galería</a></li><li><a href="recursos.html">Recursos</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <p>© 2026 Da Vinci School · <a href="index.html">davincischool.cl</a></p>
+      <a href="https://volantin.cl" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:3px;text-decoration:none;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.3px;" onmouseenter="this.style.background='rgba(32,138,174,.15)';this.style.color='white'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.color='rgba(255,255,255,.5)'">
+        <svg width="10" height="10" fill="none" stroke="#208AAE" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Diseñado por <span style="color:#208AAE;font-weight:700;margin-left:2px;">Volantín Creativo</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/56912345678" class="wa" target="_blank">
+  <svg fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Calendario — Da Vinci School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark:#0C2D3D;--dark2:#081E2A;--red:#FF0204;--red2:#CC0103;
+  --blue:#208AAE;--blue2:#1A6F8C;--cream:#F8F2DC;--gray:#706566;
+  --glt:#A09899;--white:#FFFFFF;--off:#FAFAF8;--rule:#E8E2D0;
+  --lora:'Lora',Georgia,serif;--mont:'Montserrat',sans-serif;
+  --nav:56px;--tab:60px;
+  --ev-acad:#208AAE;--ev-cult:#C4993A;--ev-dep:#2E7D52;--ev-inst:#FF0204;--ev-reunion:#706566;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--mont);background:var(--off);color:var(--dark);overflow-x:hidden;-webkit-text-size-adjust:100%;padding-bottom:var(--tab);padding-top:var(--nav);}
+img{display:block;max-width:100%;height:auto;}
+.c{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,48px);}
+
+/* ── ANNOUNCE ── */
+.announce-bar{position:fixed;top:0;left:0;right:0;z-index:790;background:var(--blue);padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;font-weight:600;color:white;}
+.announce-bar a{color:white;text-decoration:underline;text-underline-offset:2px;}
+.announce-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;padding:4px;}
+.announce-dot{width:6px;height:6px;background:var(--cream);border-radius:50%;flex-shrink:0;animation:blinkAnn 2s ease-in-out infinite;}
+@keyframes blinkAnn{0%,100%{opacity:.8;}50%{opacity:.3;}}
+body.has-announce{--ah:34px;}
+body.has-announce .mob-topbar,body.has-announce .desk-nav{top:var(--ah);}
+body.has-announce{padding-top:calc(var(--nav) + var(--ah));}
+
+/* ── NAV ── */
+.mob-topbar{position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 clamp(16px,4vw,20px);gap:10px;}
+@media(min-width:960px){.mob-topbar{display:none;}}
+.logo-txt,.nav-logo-txt{font-family:var(--lora);font-size:15px;font-weight:600;color:white !important;line-height:1.15;}
+.logo-txt span,.nav-logo-txt span{display:block;font-size:9px;font-weight:400;color:rgba(255,255,255,.38) !important;font-family:var(--mont);letter-spacing:1.5px;text-transform:uppercase;}
+.desk-nav{display:none;position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);align-items:center;}
+.desk-nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:3px;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nav-links a:hover{color:white;}.nav-links a:hover::after{transform:scaleX(1);}
+.nav-links a.active{color:white;}.nav-links a.active::after{transform:scaleX(1);background:var(--red);}
+.nav-cta-d{background:var(--red);color:white;padding:8px 18px;border-radius:3px;font-family:var(--mont);font-size:11px;font-weight:700;text-decoration:none;letter-spacing:.3px;transition:all .2s;flex-shrink:0;}
+.nav-cta-d:hover{background:var(--red2);box-shadow:0 4px 16px rgba(255,2,4,.4);transform:translateY(-1px);}
+.desk-nav a{color:white !important;text-decoration:none;}
+@media(min-width:960px){.desk-nav{display:flex;}body{padding-bottom:0;}}
+
+/* ── TAB BAR ── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:800;height:var(--tab);background:rgba(10,26,37,.98);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.1);padding-bottom:env(safe-area-inset-bottom,0);}
+.tab-items{display:flex;align-items:stretch;height:100%;width:100%;}
+.ti{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:rgba(255,255,255,.4);font-size:9px;font-weight:600;letter-spacing:.2px;text-transform:uppercase;padding:4px 0;border:none;background:none;-webkit-tap-highlight-color:transparent;transition:color .15s;min-width:0;}
+.ti svg{width:18px;height:18px;flex-shrink:0;}
+.ti span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;padding:0 2px;}
+.ti:active{color:rgba(255,255,255,.85);}.ti:hover:not(.ti-cta){color:var(--blue);}
+.ti-cta{flex:1.5;background:var(--red);color:white !important;border-radius:12px 12px 0 0;margin:0 4px;box-shadow:0 -4px 20px rgba(255,2,4,.4);font-size:9px;font-weight:700;}
+.ti-cta svg{width:20px;height:20px;}
+@media(min-width:960px){.tab-bar{display:none;}}
+
+/* ── PAGE HERO ── */
+.page-hero{position:relative;overflow:hidden;height:clamp(200px,26vw,300px);display:flex;flex-direction:column;justify-content:flex-end;}
+.page-hero-bg{position:absolute;inset:0;overflow:hidden;}
+.page-hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;}
+.page-hero-ov{position:absolute;inset:0;background:linear-gradient(112deg,rgba(12,45,61,.78) 0%,rgba(12,45,61,.48) 45%,rgba(12,45,61,.12) 100%),linear-gradient(to top,rgba(8,18,26,.88) 0%,rgba(8,18,26,.2) 45%,transparent 70%);}
+.page-hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;}
+.page-hero-body{position:relative;z-index:2;padding:clamp(20px,4vw,40px) 0 clamp(52px,8vw,64px);}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:500;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.breadcrumb a{color:rgba(255,255,255,.45);text-decoration:none;}.breadcrumb a:hover{color:white;}
+.breadcrumb span{color:rgba(255,255,255,.25);}
+.page-title{font-family:var(--lora);font-size:clamp(26px,5vw,52px);font-weight:400;color:white;line-height:1.1;}
+.page-title em{font-style:italic;color:var(--cream);}
+.page-cut{position:absolute;bottom:-1px;left:0;right:0;height:48px;background:var(--off);clip-path:polygon(0 100%,100% 100%,100% 0);z-index:3;}
+
+/* ── MAIN LAYOUT ── */
+.cal-page{padding:clamp(28px,5vw,56px) 0;}
+.cal-layout{display:flex;flex-direction:column;gap:24px;}
+@media(min-width:960px){.cal-layout{flex-direction:row;gap:32px;align-items:flex-start;}}
+
+/* ── CALENDAR WIDGET ── */
+.cal-widget{background:var(--dark);border-radius:8px;overflow:hidden;flex-shrink:0;}
+@media(min-width:960px){.cal-widget{width:360px;position:sticky;top:calc(var(--nav) + 16px);}}
+
+.cal-widget-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.08);}
+.cal-month-title{font-family:var(--lora);font-size:18px;font-weight:400;color:white;}
+.cal-month-title span{font-size:12px;color:rgba(255,255,255,.4);font-family:var(--mont);font-weight:400;margin-left:6px;}
+.cal-nav{display:flex;gap:6px;}
+.cal-nav-btn{width:30px;height:30px;border:none;border-radius:4px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);cursor:pointer;font-size:14px;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.cal-nav-btn:hover{background:rgba(32,138,174,.3);color:var(--blue);}
+
+.cal-grid-wrap{padding:14px 16px 18px;}
+.cal-days-header{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px;}
+.cal-days-header span{text-align:center;font-size:8px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.5px;text-transform:uppercase;padding:3px 0;}
+.cal-days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(255,255,255,.45);border-radius:4px;cursor:pointer;transition:all .15s;position:relative;font-weight:400;}
+.cal-day:hover{background:rgba(255,255,255,.08);color:white;}
+.cal-day.today{background:var(--red);color:white;font-weight:700;}
+.cal-day.has-event::after{content:'';position:absolute;bottom:3px;width:4px;height:4px;border-radius:50%;background:var(--blue);}
+.cal-day.today.has-event::after{background:rgba(255,255,255,.8);}
+.cal-day.other-month{opacity:.2;}
+.cal-day.selected{background:rgba(32,138,174,.3);color:white;border:1px solid rgba(32,138,174,.5);}
+
+/* Legend */
+.cal-legend{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 16px;}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:9px;color:rgba(255,255,255,.4);font-weight:500;}
+.leg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* ── EVENTS LIST ── */
+.events-col{flex:1;min-width:0;}
+
+.events-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;}
+.events-title{font-family:var(--lora);font-size:clamp(18px,2.5vw,24px);font-weight:600;color:var(--dark);}
+.events-filters{display:flex;gap:6px;flex-wrap:wrap;}
+.ev-filter{padding:5px 12px;border-radius:20px;border:1px solid var(--rule);background:white;font-family:var(--mont);font-size:10px;font-weight:500;color:var(--gray);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.ev-filter:hover{border-color:var(--blue);color:var(--blue);}
+.ev-filter.active{background:var(--dark);border-color:var(--dark);color:white;}
+
+/* Event cards */
+.events-list{display:flex;flex-direction:column;gap:10px;}
+.ev-card{background:white;border:1px solid var(--rule);border-radius:6px;padding:16px 18px;display:flex;align-items:flex-start;gap:14px;transition:all .2s;position:relative;overflow:hidden;}
+.ev-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.ev-card.ev-acad::before{background:var(--ev-acad);}
+.ev-card.ev-cult::before{background:var(--ev-cult);}
+.ev-card.ev-dep::before{background:var(--ev-dep);}
+.ev-card.ev-inst::before{background:var(--ev-inst);}
+.ev-card.ev-reunion::before{background:var(--ev-reunion);}
+.ev-card:hover{border-color:rgba(32,138,174,.25);box-shadow:0 4px 16px rgba(12,45,61,.08);transform:translateX(2px);}
+
+.ev-date-box{min-width:52px;display:flex;flex-direction:column;align-items:center;background:var(--off);border-radius:4px;padding:8px 6px;flex-shrink:0;border:1px solid var(--rule);}
+.ev-day{font-family:var(--lora);font-size:22px;font-weight:700;color:var(--dark);line-height:1;}
+.ev-month{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--glt);margin-top:2px;}
+
+.ev-info{flex:1;min-width:0;}
+.ev-tag{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;display:inline-block;padding:2px 8px;border-radius:10px;}
+.ev-acad .ev-tag{background:rgba(32,138,174,.1);color:var(--blue2);}
+.ev-cult .ev-tag{background:rgba(196,153,58,.1);color:#8A6A1A;}
+.ev-dep .ev-tag{background:rgba(46,125,82,.1);color:#2E7D52;}
+.ev-inst .ev-tag{background:rgba(255,2,4,.08);color:var(--red2);}
+.ev-reunion .ev-tag{background:rgba(112,101,102,.1);color:var(--gray);}
+.ev-title{font-family:var(--lora);font-size:clamp(14px,1.6vw,16px);font-weight:600;color:var(--dark);margin-bottom:4px;line-height:1.3;}
+.ev-meta{font-size:11px;color:var(--gray);font-weight:300;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.ev-meta svg{width:11px;height:11px;flex-shrink:0;opacity:.6;}
+
+/* Month divider */
+.month-divider{font-size:10px;font-weight:700;color:var(--glt);text-transform:uppercase;letter-spacing:1.5px;padding:16px 0 8px;border-bottom:1px solid var(--rule);margin-bottom:4px;}
+.month-divider:first-child{padding-top:0;}
+
+/* Empty state */
+.empty-state{text-align:center;padding:48px 24px;color:var(--glt);}
+.empty-state svg{width:40px;height:40px;margin:0 auto 12px;opacity:.3;}
+.empty-state p{font-size:13px;}
+
+/* ── FOOTER ── */
+footer{background:#060E13;padding:36px 0 20px;}
+.foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.06);}
+@media(min-width:640px){.foot-grid{grid-template-columns:2fr 1fr 1fr 1fr;}}
+.fb p{font-size:11px;color:rgba(255,255,255,.28);font-weight:300;line-height:1.8;margin-top:12px;max-width:200px;}
+.fc h5{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.fc a{font-size:11px;color:rgba(255,255,255,.3);text-decoration:none;font-weight:300;transition:color .2s;}
+.fc a:hover{color:white;}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:16px;flex-wrap:wrap;gap:8px;}
+.foot-bot p{font-size:10px;color:rgba(255,255,255,.18);}
+.foot-bot a{color:rgba(32,138,174,.4);text-decoration:none;}
+.wa{position:fixed;z-index:700;width:50px;height:50px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s;bottom:calc(var(--tab) + 16px);right:16px;}
+@media(min-width:960px){.wa{bottom:24px;right:20px;}}
+.wa:hover{transform:scale(1.1);}
+.wa svg{width:22px;height:22px;}
+</style>
+</head>
+<body class="has-announce">
+
+<div class="announce-bar" id="announceBar">
+  <div class="announce-dot"></div>
+  <span>📅 &nbsp;Período de postulación SAE 2026 abierto &mdash; <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank">Postula aquí →</a></span>
+  <button class="announce-close" onclick="document.getElementById('announceBar').remove();document.body.classList.remove('has-announce');" aria-label="Cerrar">×</button>
+</div>
+
+<header class="mob-topbar">
+  <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+    <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+  </a>
+</header>
+
+<nav class="desk-nav">
+  <div class="c desk-nav-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+      <div class="nav-logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="admisiones.html">Admisiones</a></li>
+      <li><a href="noticias.html">Noticias</a></li>
+      <li><a href="documentos.html">Documentos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="admisiones.html" class="nav-cta-d">Inscribir a mi hijo</a>
+  </div>
+</nav>
+
+<div class="tab-bar">
+  <div class="tab-items">
+    <a href="index.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></a>
+    <a href="noticias.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"/><line x1="17" y1="12" x2="7" y2="12"/></svg><span>Noticias</span></a>
+    <a href="admisiones.html" class="ti ti-cta"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg><span>Inscribir</span></a>
+    <a href="documentos.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Docs</span></a>
+    <a href="contacto.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Contacto</span></a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg">
+    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1400&q=80" alt="Calendario Da Vinci School" loading="eager">
+  </div>
+  <div class="page-hero-ov"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-body c">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a><span>›</span>
+      <span style="color:rgba(255,255,255,.7);">Calendario</span>
+    </div>
+    <h1 class="page-title">Agenda <em>escolar</em></h1>
+  </div>
+  <div class="page-cut"></div>
+</section>
+
+<!-- CONTENT -->
+<div class="cal-page">
+  <div class="c">
+    <div class="cal-layout">
+
+      <!-- CALENDAR WIDGET -->
+      <div class="cal-widget">
+        <div class="cal-widget-head">
+          <div class="cal-month-title" id="calTitle">Marzo <span>2026</span></div>
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+            <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+          </div>
+        </div>
+        <div class="cal-grid-wrap">
+          <div class="cal-days-header">
+            <span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span>
+          </div>
+          <div class="cal-days-grid" id="calGrid"></div>
+        </div>
+        <div class="cal-legend">
+          <div class="leg-item"><div class="leg-dot" style="background:var(--ev-acad)"></div>Académico</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--ev-cult)"></div>Cultural</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--ev-dep)"></div>Deportivo</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--ev-inst)"></div>Institucional</div>
+          <div class="leg-item"><div class="leg-dot" style="background:var(--ev-reunion)"></div>Reunión</div>
+        </div>
+      </div>
+
+      <!-- EVENTS LIST -->
+      <div class="events-col">
+        <div class="events-header">
+          <div class="events-title">Próximos eventos</div>
+          <div class="events-filters">
+            <button class="ev-filter active" onclick="filterEvents(this,'all')">Todos</button>
+            <button class="ev-filter" onclick="filterEvents(this,'acad')">Académico</button>
+            <button class="ev-filter" onclick="filterEvents(this,'cult')">Cultural</button>
+            <button class="ev-filter" onclick="filterEvents(this,'dep')">Deportivo</button>
+            <button class="ev-filter" onclick="filterEvents(this,'inst')">Institucional</button>
+            <button class="ev-filter" onclick="filterEvents(this,'reunion')">Reuniones</button>
+          </div>
+        </div>
+
+        <div class="events-list" id="eventsList">
+
+          <div class="month-divider">Marzo 2026</div>
+
+          <div class="ev-card ev-inst" data-cat="inst">
+            <div class="ev-date-box"><span class="ev-day">02</span><span class="ev-month">Mar</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Institucional</span>
+              <div class="ev-title">Inicio del año escolar 2026</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 8:00 hrs
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg> Establecimiento completo
+              </div>
+            </div>
+          </div>
+
+          <div class="ev-card ev-reunion" data-cat="reunion">
+            <div class="ev-date-box"><span class="ev-day">10</span><span class="ev-month">Mar</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Reunión</span>
+              <div class="ev-title">Reunión de apoderados — Pre-Básica y 1° a 4° Básico</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 18:30 hrs
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg> Auditorio
+              </div>
+            </div>
+          </div>
+
+          <div class="ev-card ev-reunion" data-cat="reunion">
+            <div class="ev-date-box"><span class="ev-day">11</span><span class="ev-month">Mar</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Reunión</span>
+              <div class="ev-title">Reunión de apoderados — 5° a 8° Básico y Enseñanza Media</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 18:30 hrs
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg> Auditorio
+              </div>
+            </div>
+          </div>
+
+          <div class="ev-card ev-acad" data-cat="acad">
+            <div class="ev-date-box"><span class="ev-day">21</span><span class="ev-month">Mar</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Académico</span>
+              <div class="ev-title">Primera evaluación diagnóstica — todos los niveles</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Jornada completa
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg> Aulas regulares
+              </div>
+            </div>
+          </div>
+
+          <div class="month-divider">Abril 2026</div>
+
+          <div class="ev-card ev-cult" data-cat="cult">
+            <div class="ev-date-box"><span class="ev-day">04</span><span class="ev-month">Abr</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Cultural</span>
+              <div class="ev-title">Semana de las Artes — muestra y talleres abiertos</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 9:00 – 13:00 hrs
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg> Patio central y salas
+              </div>
+            </div>
+          </div>
+
+          <div class="ev-card ev-inst" data-cat="inst">
+            <div class="ev-date-box"><span class="ev-day">14</span><span class="ev-month">Abr</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Institucional</span>
+              <div class="ev-title">Vacaciones de otoño — no hay clases</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 14 al 18 de abril
+              </div>
+            </div>
+          </div>
+
+          <div class="ev-card ev-dep" data-cat="dep">
+            <div class="ev-date-box"><span class="ev-day">25</span><span class="ev-month">Abr</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Deportivo</span>
+              <div class="ev-title">Olimpiadas internas Da Vinci — atletismo y deportes de equipo</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 9:00 hrs
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg> Cancha y patio
+              </div>
+            </div>
+          </div>
+
+          <div class="month-divider">Mayo 2026</div>
+
+          <div class="ev-card ev-acad" data-cat="acad">
+            <div class="ev-date-box"><span class="ev-day">08</span><span class="ev-month">May</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Académico</span>
+              <div class="ev-title">Feria de Ciencias 2026 — inscripción de proyectos abierta</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Jornada de tarde
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg> Sala multiuso
+              </div>
+            </div>
+          </div>
+
+          <div class="ev-card ev-reunion" data-cat="reunion">
+            <div class="ev-date-box"><span class="ev-day">19</span><span class="ev-month">May</span></div>
+            <div class="ev-info">
+              <span class="ev-tag">Reunión</span>
+              <div class="ev-title">Reunión de apoderados — Entrega de notas 1° período</div>
+              <div class="ev-meta">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 18:30 hrs
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg> Por curso (ver circular)
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /events-list -->
+      </div><!-- /events-col -->
+
+    </div><!-- /cal-layout -->
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="c">
+    <div class="foot-grid">
+      <div class="fb">
+        <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+          <img src="logo-davinci.png" width="32" height="32" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+          <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+        </a>
+        <p>Formando personas íntegras, creativas y bilingües desde Pre-Básica hasta 4° Medio.</p>
+      </div>
+      <div class="fc"><h5>El colegio</h5><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="nosotros.html">Bilingüismo</a></li><li><a href="admisiones.html">Admisiones SAE</a></li></ul></div>
+      <div class="fc"><h5>Apoderados</h5><ul><li><a href="documentos.html">Boletines</a></li><li><a href="calendario.html">Calendario</a></li><li><a href="documentos.html">Circulares</a></li></ul></div>
+      <div class="fc"><h5>Más</h5><ul><li><a href="noticias.html">Noticias</a></li><li><a href="galeria.html">Galería</a></li><li><a href="recursos.html">Recursos</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <p>© 2026 Da Vinci School · <a href="index.html">davincischool.cl</a></p>
+      <a href="https://volantin.cl" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:3px;text-decoration:none;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.3px;" onmouseenter="this.style.background='rgba(32,138,174,.15)';this.style.color='white'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.color='rgba(255,255,255,.5)'">
+        <svg width="10" height="10" fill="none" stroke="#208AAE" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Diseñado por <span style="color:#208AAE;font-weight:700;margin-left:2px;">Volantín Creativo</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/56912345678" class="wa" target="_blank">
+  <svg fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// ── EVENTS DATA ──
+const events = {
+  '2026-03-02': ['inst'], '2026-03-10': ['reunion'], '2026-03-11': ['reunion'],
+  '2026-03-21': ['acad'], '2026-04-04': ['cult'], '2026-04-14': ['inst'],
+  '2026-04-25': ['dep'], '2026-05-08': ['acad'], '2026-05-19': ['reunion']
+};
+
+// ── CALENDAR ──
+let viewYear = 2026, viewMonth = 2; // 0-indexed, March = 2
+const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function renderCalendar() {
+  const title = document.getElementById('calTitle');
+  title.innerHTML = `${MONTHS[viewMonth]} <span>${viewYear}</span>`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  const firstDay = new Date(viewYear, viewMonth, 1).getDay();
+  const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+  const daysInPrev = new Date(viewYear, viewMonth, 0).getDate();
+  const offset = firstDay === 0 ? 6 : firstDay - 1;
+  const today = new Date();
+
+  // Previous month days
+  for (let i = offset - 1; i >= 0; i--) {
+    const d = document.createElement('div');
+    d.className = 'cal-day other-month';
+    d.textContent = daysInPrev - i;
+    grid.appendChild(d);
+  }
+
+  // Current month days
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = d;
+    const key = `${viewYear}-${String(viewMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    if (events[key]) el.classList.add('has-event');
+    if (d === today.getDate() && viewMonth === today.getMonth() && viewYear === today.getFullYear()) el.classList.add('today');
+    grid.appendChild(el);
+  }
+
+  // Next month padding
+  const total = offset + daysInMonth;
+  const remaining = total % 7 === 0 ? 0 : 7 - (total % 7);
+  for (let i = 1; i <= remaining; i++) {
+    const d = document.createElement('div');
+    d.className = 'cal-day other-month';
+    d.textContent = i;
+    grid.appendChild(d);
+  }
+}
+
+function changeMonth(dir) {
+  viewMonth += dir;
+  if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+  if (viewMonth < 0)  { viewMonth = 11; viewYear--; }
+  renderCalendar();
+}
+
+// ── FILTER EVENTS ──
+function filterEvents(btn, cat) {
+  document.querySelectorAll('.ev-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.ev-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+  // Hide month dividers with no visible events after them
+  document.querySelectorAll('.month-divider').forEach(div => {
+    let next = div.nextElementSibling;
+    let hasVisible = false;
+    while (next && !next.classList.contains('month-divider')) {
+      if (next.style.display !== 'none') hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    div.style.display = hasVisible ? '' : 'none';
+  });
+}
+
+renderCalendar();
+</script>
+</body>
+</html>

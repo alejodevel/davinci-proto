@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Noticias — Da Vinci School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark:  #0C2D3D; --dark2: #081E2A;
+  --red:   #FF0204; --red2:  #CC0103;
+  --blue:  #208AAE; --blue2: #1A6F8C;
+  --cream: #F8F2DC; --gray:  #706566; --glt: #A09899;
+  --white: #FFFFFF; --off:   #FAFAF8; --rule: #E8E2D0;
+  --lora:  'Lora', Georgia, serif;
+  --mont:  'Montserrat', sans-serif;
+  --nav: 56px; --tab: 60px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--mont);background:var(--white);color:var(--dark);overflow-x:hidden;-webkit-text-size-adjust:100%;padding-bottom:var(--tab);padding-top:var(--nav);}
+img{display:block;max-width:100%;height:auto;}
+.c{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,48px);}
+
+/* ── ANNOUNCE ── */
+.announce-bar{position:fixed;top:0;left:0;right:0;z-index:790;background:var(--blue);padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;font-weight:600;color:white;letter-spacing:.2px;}
+.announce-bar a{color:white;text-decoration:underline;text-underline-offset:2px;}
+.announce-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;padding:4px;}
+.announce-dot{width:6px;height:6px;background:var(--cream);border-radius:50%;flex-shrink:0;animation:blinkAnn 2s ease-in-out infinite;}
+@keyframes blinkAnn{0%,100%{opacity:.8;}50%{opacity:.3;}}
+body.has-announce{--ah:34px;}
+body.has-announce .mob-topbar,body.has-announce .desk-nav{top:var(--ah);}
+body.has-announce{padding-top:calc(var(--nav) + var(--ah));}
+
+/* ── MOBILE TOPBAR ── */
+.mob-topbar{position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 clamp(16px,4vw,20px);gap:10px;}
+@media(min-width:960px){.mob-topbar{display:none;}}
+.logo-txt,.nav-logo-txt{font-family:var(--lora);font-size:15px;font-weight:600;color:white !important;line-height:1.15;}
+.logo-txt span,.nav-logo-txt span{display:block;font-size:9px;font-weight:400;color:rgba(255,255,255,.38) !important;font-family:var(--mont);letter-spacing:1.5px;text-transform:uppercase;}
+
+/* ── DESKTOP NAV ── */
+.desk-nav{display:none;position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);align-items:center;}
+.desk-nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:3px;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nav-links a:hover{color:white;}
+.nav-links a:hover::after{transform:scaleX(1);}
+.nav-links a.active{color:white;}
+.nav-links a.active::after{transform:scaleX(1);background:var(--red);}
+.nav-cta-d{background:var(--red);color:white;padding:8px 18px;border-radius:3px;font-family:var(--mont);font-size:11px;font-weight:700;text-decoration:none;letter-spacing:.3px;transition:all .2s;flex-shrink:0;}
+.nav-cta-d:hover{background:var(--red2);box-shadow:0 4px 16px rgba(255,2,4,.4);transform:translateY(-1px);}
+.desk-nav a{color:white !important;text-decoration:none;}
+@media(min-width:960px){.desk-nav{display:flex;}body{padding-bottom:0;}}
+
+/* ── TAB BAR ── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:800;height:var(--tab);background:rgba(10,26,37,.98);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.1);padding-bottom:env(safe-area-inset-bottom,0);}
+.tab-items{display:flex;align-items:stretch;height:100%;width:100%;}
+.ti{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:rgba(255,255,255,.4);font-size:9px;font-weight:600;letter-spacing:.2px;text-transform:uppercase;padding:4px 0;border:none;background:none;-webkit-tap-highlight-color:transparent;transition:color .15s;min-width:0;}
+.ti svg{width:18px;height:18px;flex-shrink:0;}
+.ti span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;padding:0 2px;}
+.ti:active{color:rgba(255,255,255,.85);}
+.ti:hover:not(.ti-cta){color:var(--blue);}
+.ti-cta{flex:1.5;background:var(--red);color:white !important;border-radius:12px 12px 0 0;margin:0 4px;box-shadow:0 -4px 20px rgba(255,2,4,.4);font-size:9px;font-weight:700;}
+.ti-cta svg{width:20px;height:20px;}
+.ti-cta:active{background:var(--red2);}
+@media(min-width:960px){.tab-bar{display:none;}}
+
+/* ── PAGE HERO ── */
+.page-hero{position:relative;overflow:hidden;height:clamp(240px,32vw,380px);display:flex;flex-direction:column;justify-content:flex-end;}
+.page-hero-bg{position:absolute;inset:0;overflow:hidden;}
+.page-hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block;}
+.page-hero-ov{position:absolute;inset:0;background:linear-gradient(112deg,rgba(12,45,61,.78) 0%,rgba(12,45,61,.48) 45%,rgba(12,45,61,.12) 100%),linear-gradient(to top,rgba(8,18,26,.88) 0%,rgba(8,18,26,.2) 45%,transparent 70%);}
+.page-hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;}
+.page-hero-body{position:relative;z-index:2;padding:clamp(20px,4vw,44px) 0 clamp(52px,8vw,64px);}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:500;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.breadcrumb a{color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;}
+.breadcrumb a:hover{color:white;}
+.breadcrumb span{color:rgba(255,255,255,.25);}
+.page-title{font-family:var(--lora);font-size:clamp(26px,5vw,52px);font-weight:400;color:white;line-height:1.1;}
+.page-title em{font-style:italic;color:var(--cream);}
+.page-cut{position:absolute;bottom:-1px;left:0;right:0;height:48px;background:var(--white);clip-path:polygon(0 100%,100% 100%,100% 0);z-index:3;}
+
+/* ── FILTERS ── */
+.filters-bar{padding:24px 0 0;border-bottom:1px solid var(--rule);}
+.filters-inner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-bottom:0;}
+.filter-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--rule);background:white;font-family:var(--mont);font-size:11px;font-weight:500;color:var(--gray);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.filter-btn:hover{border-color:var(--blue);color:var(--blue);}
+.filter-btn.active{background:var(--dark);border-color:var(--dark);color:white;}
+.filter-btn.active-blue{background:var(--blue);border-color:var(--blue);color:white;}
+.filter-btn.active-red{background:var(--red);border-color:var(--red);color:white;}
+.filter-btn.active-green{background:#2E7D52;border-color:#2E7D52;color:white;}
+
+/* ── NEWS GRID ── */
+.news-section{padding:clamp(36px,6vw,64px) 0;}
+.news-featured{display:grid;grid-template-columns:1fr;gap:20px;margin-bottom:20px;}
+@media(min-width:768px){.news-featured{grid-template-columns:1.6fr 1fr;}}
+/* Hide side stack on mobile to avoid duplicate noticias */
+.nstack{display:none;}
+@media(min-width:768px){.nstack{display:flex;flex-direction:column;gap:14px;}}
+
+/* Featured card */
+.ncard-featured{background:var(--white);border-radius:8px;overflow:hidden;text-decoration:none;color:inherit;display:block;transition:all .3s;box-shadow:0 2px 12px rgba(12,45,61,.08);}
+.ncard-featured:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(12,45,61,.15);}
+.ncard-featured .nimg{overflow:hidden;aspect-ratio:16/9;}
+.ncard-featured .nimg img{width:100%;height:100%;object-fit:cover;transition:transform .4s;display:block;}
+.ncard-featured:hover .nimg img{transform:scale(1.04);}
+.ncard-featured .nbody{padding:clamp(16px,3vw,28px);}
+.ncard-featured .ntag{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:inline-block;padding:3px 10px;border-radius:20px;}
+.tag-acad{background:rgba(12,45,61,.08);color:var(--dark);}
+.tag-cult{background:rgba(32,138,174,.1);color:var(--blue2);}
+.tag-dep{background:rgba(46,125,82,.1);color:#2E7D52;}
+.tag-inst{background:rgba(255,2,4,.08);color:var(--red2);}
+.ntitle-feat{font-family:var(--lora);font-size:clamp(18px,2.5vw,26px);font-weight:600;color:var(--dark);line-height:1.3;margin-bottom:10px;}
+.nexc{font-size:clamp(12px,1.3vw,14px);color:var(--gray);line-height:1.75;font-weight:300;}
+.nmeta{display:flex;align-items:center;gap:12px;margin-top:16px;}
+.ndate{font-size:10px;color:var(--glt);font-weight:400;}
+.nread{font-size:10px;color:var(--blue);font-weight:600;}
+
+/* Side stack */
+.nstack{display:flex;flex-direction:column;gap:14px;}
+.ncard-sm{background:var(--white);border-radius:6px;overflow:hidden;text-decoration:none;color:inherit;display:flex;gap:0;flex-direction:column;transition:all .3s;box-shadow:0 2px 8px rgba(12,45,61,.06);}
+@media(min-width:480px){.ncard-sm{flex-direction:row;}}
+.ncard-sm:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(12,45,61,.13);}
+.ncard-sm .nimg-sm{overflow:hidden;flex-shrink:0;}
+.ncard-sm .nimg-sm img{width:100%;height:160px;object-fit:cover;transition:transform .4s;display:block;}
+@media(min-width:480px){.ncard-sm .nimg-sm{width:130px;}.ncard-sm .nimg-sm img{width:130px;height:100%;}}
+.ncard-sm:hover .nimg-sm img{transform:scale(1.05);}
+.ncard-sm .nbody-sm{padding:14px;display:flex;flex-direction:column;justify-content:center;min-width:0;}
+.ntag-sm{font-size:8px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:5px;display:inline-block;padding:2px 8px;border-radius:20px;}
+.ntitle-sm{font-family:var(--lora);font-size:clamp(13px,1.4vw,15px);font-weight:600;color:var(--dark);line-height:1.3;margin-bottom:6px;}
+.ndate-sm{font-size:10px;color:var(--glt);}
+
+/* News grid main */
+.news-grid-main{display:grid;grid-template-columns:1fr;gap:16px;margin-top:20px;}
+@media(min-width:480px){.news-grid-main{grid-template-columns:1fr 1fr;}}
+@media(min-width:960px){.news-grid-main{grid-template-columns:repeat(3,1fr);}}
+.ncard-grid{background:var(--white);border-radius:6px;overflow:hidden;text-decoration:none;color:inherit;display:block;transition:all .3s;box-shadow:0 2px 8px rgba(12,45,61,.06);}
+.ncard-grid:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(12,45,61,.13);}
+.ncard-grid .nimg-grid{overflow:hidden;}
+.ncard-grid .nimg-grid img{width:100%;height:clamp(140px,20vw,180px);object-fit:cover;transition:transform .4s;display:block;}
+.ncard-grid:hover .nimg-grid img{transform:scale(1.04);}
+.ncard-grid .nbody-grid{padding:16px;}
+.ntitle-grid{font-family:var(--lora);font-size:clamp(14px,1.5vw,16px);font-weight:600;color:var(--dark);line-height:1.3;margin-bottom:6px;}
+.nexc-grid{font-size:11px;color:var(--gray);line-height:1.7;font-weight:300;}
+.nmeta-grid{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:clamp(36px,6vw,56px);}
+.pg-btn{width:36px;height:36px;border-radius:4px;border:1px solid var(--rule);background:white;font-family:var(--mont);font-size:12px;color:var(--gray);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;}
+.pg-btn:hover{border-color:var(--blue);color:var(--blue);}
+.pg-btn.active{background:var(--dark);border-color:var(--dark);color:white;font-weight:700;}
+.pg-btn.pg-nav{font-size:16px;color:var(--glt);}
+.pg-btn.pg-nav:hover{color:var(--blue);}
+
+/* ── FOOTER ── */
+footer{background:#060E13;padding:36px 0 20px;}
+.foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.06);}
+@media(min-width:640px){.foot-grid{grid-template-columns:2fr 1fr 1fr 1fr;}}
+.fb p{font-size:11px;color:rgba(255,255,255,.28);font-weight:300;line-height:1.8;margin-top:12px;max-width:200px;}
+.fc h5{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.fc a{font-size:11px;color:rgba(255,255,255,.3);text-decoration:none;font-weight:300;transition:color .2s;}
+.fc a:hover{color:white;}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:16px;flex-wrap:wrap;gap:8px;}
+.foot-bot p{font-size:10px;color:rgba(255,255,255,.18);}
+.foot-bot a{color:rgba(32,138,174,.4);text-decoration:none;}
+
+/* ── WA ── */
+.wa{position:fixed;z-index:700;width:50px;height:50px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s;bottom:calc(var(--tab) + 16px);right:16px;}
+@media(min-width:960px){.wa{bottom:24px;right:20px;}}
+.wa:hover{transform:scale(1.1);}
+.wa svg{width:22px;height:22px;}
+
+/* ── REVEAL ── */
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;}
+.rv.on{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body class="has-announce">
+
+<!-- ANNOUNCE -->
+<div class="announce-bar" id="announceBar">
+  <div class="announce-dot"></div>
+  <span>📅 &nbsp;Período de postulación SAE 2026 abierto &mdash; <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank">Postula aquí →</a></span>
+  <button class="announce-close" onclick="document.getElementById('announceBar').remove();document.body.classList.remove('has-announce');" aria-label="Cerrar">×</button>
+</div>
+
+<!-- MOBILE TOPBAR -->
+<header class="mob-topbar">
+  <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+    <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+  </a>
+</header>
+
+<!-- DESKTOP NAV -->
+<nav class="desk-nav">
+  <div class="c desk-nav-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+      <div class="nav-logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="admisiones.html">Admisiones</a></li>
+      <li><a href="noticias.html" class="active">Noticias</a></li>
+      <li><a href="documentos.html">Documentos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="admisiones.html" class="nav-cta-d">Inscribir a mi hijo</a>
+  </div>
+</nav>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-items">
+    <a href="index.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></a>
+    <a href="noticias.html" class="ti" style="color:rgba(255,255,255,.85);"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"/><line x1="17" y1="12" x2="7" y2="12"/><line x1="17" y1="16" x2="7" y2="16"/><line x1="10" y1="8" x2="7" y2="8"/></svg><span>Noticias</span></a>
+    <a href="admisiones.html" class="ti ti-cta"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg><span>Inscribir</span></a>
+    <a href="documentos.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Docs</span></a>
+    <a href="contacto.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Contacto</span></a>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg">
+    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1400&q=80" alt="Noticias Da Vinci School" loading="eager">
+  </div>
+  <div class="page-hero-ov"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-body c">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a><span>›</span>
+      <span style="color:rgba(255,255,255,.7);">Noticias</span>
+    </div>
+    <h1 class="page-title">Noticias de <em>la comunidad</em></h1>
+  </div>
+  <div class="page-cut"></div>
+</section>
+
+<!-- FILTROS -->
+<div class="filters-bar">
+  <div class="c filters-inner">
+    <button class="filter-btn active" onclick="setFilter(this,'all')">Todas</button>
+    <button class="filter-btn" onclick="setFilter(this,'acad')" style="">Académico</button>
+    <button class="filter-btn" onclick="setFilter(this,'cult')">Cultural</button>
+    <button class="filter-btn" onclick="setFilter(this,'dep')">Deportivo</button>
+    <button class="filter-btn" onclick="setFilter(this,'inst')">Institucional</button>
+  </div>
+</div>
+
+<!-- NOTICIAS -->
+<section class="news-section rv">
+  <div class="c">
+
+    <!-- Destacadas -->
+    <div class="news-featured">
+      <a href="noticia.html" class="ncard-featured" data-cat="acad">
+        <div class="nimg">
+          <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80" alt="SIMCE">
+        </div>
+        <div class="nbody">
+          <span class="ntag tag-acad">Académico</span>
+          <h2 class="ntitle-feat">Resultados históricos SIMCE: Da Vinci lidera en Puerto Montt</h2>
+          <p class="nexc">Nuestros estudiantes de 4° básico y 2° medio obtuvieron puntajes sobre el promedio nacional en Lenguaje y Matemáticas, consolidando a Da Vinci School como referente educativo de la región.</p>
+          <div class="nmeta">
+            <span class="ndate">15 de noviembre, 2024</span>
+            <span class="nread">4 min de lectura</span>
+          </div>
+        </div>
+      </a>
+      <div class="nstack">
+        <a href="noticia.html" class="ncard-sm" data-cat="cult">
+          <div class="nimg-sm"><img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Arte"></div>
+          <div class="nbody-sm">
+            <span class="ntag-sm tag-cult">Cultural</span>
+            <h3 class="ntitle-sm">Festival de Arte 2024: más de 200 obras expuestas</h3>
+            <span class="ndate-sm">8 de noviembre, 2024</span>
+          </div>
+        </a>
+        <a href="noticia.html" class="ncard-sm" data-cat="dep">
+          <div class="nimg-sm"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="Deporte"></div>
+          <div class="nbody-sm">
+            <span class="ntag-sm tag-dep">Deportivo</span>
+            <h3 class="ntitle-sm">Equipo de básquetbol avanza a semifinales del campeonato interescolar</h3>
+            <span class="ndate-sm">2 de noviembre, 2024</span>
+          </div>
+        </a>
+        <a href="noticia.html" class="ncard-sm" data-cat="inst">
+          <div class="nimg-sm"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&q=80" alt="Institución"></div>
+          <div class="nbody-sm">
+            <span class="ntag-sm tag-inst">Institucional</span>
+            <h3 class="ntitle-sm">Da Vinci School firma convenio de colaboración con universidad regional</h3>
+            <span class="ndate-sm">28 de octubre, 2024</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Grid principal -->
+    <div class="news-grid-main">
+      <a href="noticia.html" class="ncard-grid" data-cat="acad">
+        <div class="nimg-grid"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=500&q=80" alt=""></div>
+        <div class="nbody-grid"><span class="ntag-sm tag-acad">Académico</span><h3 class="ntitle-grid">Feria de Ciencias 2024: estudiantes presentan proyectos de innovación</h3><p class="nexc-grid">Doce proyectos compitieron en nuestra feria anual de ciencias con foco en sustentabilidad.</p><div class="nmeta-grid"><span class="ndate-sm">20 octubre, 2024</span><span style="font-size:10px;color:var(--blue);font-weight:600;">Leer →</span></div></div>
+      </a>
+      <a href="noticia.html" class="ncard-grid" data-cat="inst">
+        <div class="nimg-grid"><img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=500&q=80" alt=""></div>
+        <div class="nbody-grid"><span class="ntag-sm tag-inst">Institucional</span><h3 class="ntitle-grid">Inauguración de nueva sala de computación con equipamiento de última generación</h3><p class="nexc-grid">30 nuevos equipos y conexión de alta velocidad para todos los niveles.</p><div class="nmeta-grid"><span class="ndate-sm">15 octubre, 2024</span><span style="font-size:10px;color:var(--blue);font-weight:600;">Leer →</span></div></div>
+      </a>
+      <a href="noticia.html" class="ncard-grid" data-cat="cult">
+        <div class="nimg-grid"><img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=500&q=80" alt=""></div>
+        <div class="nbody-grid"><span class="ntag-sm tag-cult">Cultural</span><h3 class="ntitle-grid">Acto de aniversario: 15 años formando líderes en Puerto Montt</h3><p class="nexc-grid">La comunidad Da Vinci celebró un nuevo aniversario con acto central y muestra fotográfica.</p><div class="nmeta-grid"><span class="ndate-sm">5 octubre, 2024</span><span style="font-size:10px;color:var(--blue);font-weight:600;">Leer →</span></div></div>
+      </a>
+      <a href="noticia.html" class="ncard-grid" data-cat="dep">
+        <div class="nimg-grid"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=500&q=80" alt=""></div>
+        <div class="nbody-grid"><span class="ntag-sm tag-dep">Deportivo</span><h3 class="ntitle-grid">Torneo de atletismo: nuestros alumnos conquistan 5 medallas regionales</h3><p class="nexc-grid">Destacada actuación en los Juegos Escolares Regionales de Los Lagos.</p><div class="nmeta-grid"><span class="ndate-sm">28 sept, 2024</span><span style="font-size:10px;color:var(--blue);font-weight:600;">Leer →</span></div></div>
+      </a>
+      <a href="noticia.html" class="ncard-grid" data-cat="acad">
+        <div class="nimg-grid"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=500&q=80" alt=""></div>
+        <div class="nbody-grid"><span class="ntag-sm tag-acad">Académico</span><h3 class="ntitle-grid">Programa de inglés intensivo para estudiantes de enseñanza media</h3><p class="nexc-grid">Nuevo módulo de conversación avanzada preparado por profesores nativos.</p><div class="nmeta-grid"><span class="ndate-sm">20 sept, 2024</span><span style="font-size:10px;color:var(--blue);font-weight:600;">Leer →</span></div></div>
+      </a>
+      <a href="noticia.html" class="ncard-grid" data-cat="cult">
+        <div class="nimg-grid"><img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500&q=80" alt=""></div>
+        <div class="nbody-grid"><span class="ntag-sm tag-cult">Cultural</span><h3 class="ntitle-grid">Taller de teatro: estudiantes presentan obra original en el Teatro Regional</h3><p class="nexc-grid">Función a sala llena con la obra "El viaje de Leonardo", escrita por los propios alumnos.</p><div class="nmeta-grid"><span class="ndate-sm">12 sept, 2024</span><span style="font-size:10px;color:var(--blue);font-weight:600;">Leer →</span></div></div>
+      </a>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+      <button class="pg-btn pg-nav">‹</button>
+      <button class="pg-btn active">1</button>
+      <button class="pg-btn">2</button>
+      <button class="pg-btn">3</button>
+      <span style="font-size:12px;color:var(--glt);padding:0 4px;">…</span>
+      <button class="pg-btn">8</button>
+      <button class="pg-btn pg-nav">›</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="c">
+    <div class="foot-grid">
+      <div class="fb">
+        <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+          <img src="logo-davinci.png" width="32" height="32" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+          <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+        </a>
+        <p>Formando personas íntegras, creativas y bilingües desde Pre-Básica hasta 4° Medio.</p>
+      </div>
+      <div class="fc"><h5>El colegio</h5><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="nosotros.html">Bilingüismo</a></li><li><a href="nosotros.html">Talleres</a></li><li><a href="admisiones.html">Admisiones SAE</a></li></ul></div>
+      <div class="fc"><h5>Apoderados</h5><ul><li><a href="documentos.html">Boletines</a></li><li><a href="calendario.html">Calendario</a></li><li><a href="documentos.html">Circulares</a></li><li><a href="documentos.html">Útiles</a></li></ul></div>
+      <div class="fc"><h5>Más</h5><ul><li><a href="noticias.html">Noticias</a></li><li><a href="galeria.html">Galería</a></li><li><a href="recursos.html">Recursos</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <p>© 2026 Da Vinci School · <a href="index.html">davincischool.cl</a></p>
+      <a href="https://volantin.cl" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:3px;text-decoration:none;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.3px;" onmouseenter="this.style.background='rgba(32,138,174,.15)';this.style.color='white'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.color='rgba(255,255,255,.5)'">
+        <svg width="10" height="10" fill="none" stroke="#208AAE" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Diseñado por <span style="color:#208AAE;font-weight:700;margin-left:2px;">Volantín Creativo</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/56912345678" class="wa" target="_blank">
+  <svg fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+function setFilter(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Filter all news cards
+  const allCards = document.querySelectorAll('[data-cat]');
+  allCards.forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+  // Show/hide section containers if empty
+  document.querySelectorAll('.news-featured, .news-grid-main').forEach(section => {
+    const visible = section.querySelectorAll('[data-cat]:not([style*="display: none"])');
+    section.style.display = visible.length === 0 ? 'none' : '';
+  });
+}
+const obs = new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.07});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

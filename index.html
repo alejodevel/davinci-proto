@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Da Vinci School — Formando mentes extraordinarias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════════════════
+   VARIABLES
+══════════════════════════════════════════════ */
+:root {
+  --dark:   #0C2D3D;
+  --dark2:  #081E2A;
+  --red:    #FF0204;
+  --red2:   #CC0103;
+  --blue:   #208AAE;
+  --blue2:  #1A6F8C;
+  --cream:  #F8F2DC;
+  --gray:   #706566;
+  --glt:    #A09899;
+  --white:  #FFFFFF;
+  --off:    #FAFAF8;
+  --rule:   #E8E2D0;
+  --lora:   'Lora', Georgia, serif;
+  --mont:   'Montserrat', sans-serif;
+  --nav:    56px;
+  --tab:    60px;
+}
+
+/* ══════════════════════════════════════════════
+   RESET — mobile-first base (320px)
+══════════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:var(--mont);
+  background:var(--white); color:var(--dark);
+  overflow-x:hidden; -webkit-text-size-adjust:100%;
+  padding-bottom:var(--tab); /* space for tab bar */
+}
+img { display:block; max-width:100%; height:auto; }
+
+/* (cursor del sistema — sin personalización) */
+
+/* ══════════════════════════════════════════════
+   ANNOUNCEMENT BAR
+══════════════════════════════════════════════ */
+.announce-bar {
+  position:fixed; top:0; left:0; right:0; z-index:790;
+  background:var(--blue);
+  padding:8px 16px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  font-size:11px; font-weight:600; color:white;
+  letter-spacing:.2px; line-height:1.4;
+  animation:slideDown .4s ease;
+}
+.announce-bar a { color:white; text-decoration:underline; text-underline-offset:2px; }
+.announce-bar a:hover { opacity:.8; }
+.announce-close {
+  position:absolute; right:12px; top:50%; transform:translateY(-50%);
+  background:none; border:none; color:rgba(255,255,255,.7);
+  font-size:16px; cursor:pointer; line-height:1; padding:4px;
+  transition:color .2s;
+}
+.announce-close:hover { color:white; }
+.announce-dot {
+  width:6px; height:6px; background:var(--cream);
+  border-radius:50%; flex-shrink:0; opacity:.8;
+  animation:blinkAnn 2s ease-in-out infinite;
+}
+@keyframes slideDown { from{transform:translateY(-100%);opacity:0;} to{transform:translateY(0);opacity:1;} }
+@keyframes blinkAnn { 0%,100%{opacity:.8;} 50%{opacity:.3;} }
+
+/* Push content down when bar is visible */
+body.has-announce { --announce-h: 34px; }
+body.has-announce .mob-topbar,
+body.has-announce .desk-nav { top:var(--announce-h); }
+@media(min-width:960px){
+  body.has-announce { padding-top:calc(var(--nav) + var(--announce-h)); }
+}
+@media(max-width:959px){
+  body.has-announce { padding-top:calc(var(--nav) + var(--announce-h)); }
+}
+
+/* ══════════════════════════════════════════════
+   CONTAINER
+══════════════════════════════════════════════ */
+.c {
+  width:100%; max-width:1200px;
+  margin:0 auto;
+  padding:0 16px;
+}
+@media(min-width:390px){ .c { padding:0 20px; } }
+@media(min-width:768px){ .c { padding:0 32px; } }
+@media(min-width:1024px){ .c { padding:0 48px; } }
+
+/* ══════════════════════════════════════════════
+   MOBILE TOP BAR
+══════════════════════════════════════════════ */
+.mob-topbar {
+  position:fixed; top:0; left:0; right:0; z-index:800;
+  height:var(--nav); background:rgba(12,45,61,.97);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex; align-items:center; padding:0 16px;
+  gap:10px;
+}
+@media(min-width:390px){ .mob-topbar { padding:0 20px; } }
+@media(min-width:960px){ .mob-topbar { display:none; } }
+
+/* ══════════════════════════════════════════════
+   LOGO SVG
+══════════════════════════════════════════════ */
+.logo-mark { flex-shrink:0; }
+.logo-txt, .nav-logo-txt { font-family:var(--lora); font-size:15px; font-weight:600; color:white !important; line-height:1.15; }
+.logo-txt span, .nav-logo-txt span { display:block; font-size:9px; font-weight:400; color:rgba(255,255,255,.38) !important; font-family:var(--mont); letter-spacing:1.5px; text-transform:uppercase; }
+
+/* ══════════════════════════════════════════════
+   DESKTOP NAV
+══════════════════════════════════════════════ */
+.desk-nav {
+  display:none;
+  position:fixed; top:0; left:0; right:0; z-index:800;
+  height:var(--nav); background:rgba(12,45,61,.97);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  align-items:center;
+}
+.desk-nav-inner { display:flex; align-items:center; justify-content:space-between; width:100%; }
+.desk-nav a { color:white !important; text-decoration:none; }
+.nav-links { display:flex; align-items:center; gap:24px; list-style:none; }
+.nav-links a { color:rgba(255,255,255,.6); text-decoration:none; font-size:11px; font-weight:500; letter-spacing:.5px; text-transform:uppercase; transition:color .2s; position:relative; padding-bottom:3px; }
+.nav-links a::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1.5px; background:var(--blue); transform:scaleX(0); transform-origin:left; transition:transform .25s ease; }
+.nav-links a:hover { color:white; }
+.nav-links a:hover::after { transform:scaleX(1); }
+.nav-cta-d {
+  background:var(--red); color:white; padding:8px 18px; border-radius:3px;
+  font-family:var(--mont); font-size:11px; font-weight:700;
+  text-decoration:none; letter-spacing:.3px; transition:all .2s; flex-shrink:0;
+}
+.nav-cta-d:hover { background:var(--red2); box-shadow:0 4px 16px rgba(255,2,4,.4); transform:translateY(-1px); }
+@media(min-width:960px){
+  .desk-nav { display:flex; }
+  body { padding-bottom:0; padding-top:var(--nav); }
+}
+
+/* ══════════════════════════════════════════════
+   BOTTOM TAB BAR (< 960px)
+══════════════════════════════════════════════ */
+.tab-bar {
+  position:fixed; bottom:0; left:0; right:0; z-index:800;
+  height:var(--tab);
+  background:rgba(10,26,37,.98);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,255,255,.1);
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+.tab-items {
+  display:flex; align-items:stretch;
+  height:100%; width:100%;
+  padding:0;
+}
+.ti {
+  flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:3px; text-decoration:none; color:rgba(255,255,255,.4);
+  font-size:9px; font-weight:600; letter-spacing:.2px; text-transform:uppercase;
+  padding:4px 0; border:none; background:none;
+  -webkit-tap-highlight-color:transparent; transition:color .15s;
+  min-width:0;
+}
+.ti svg { width:18px; height:18px; flex-shrink:0; }
+.ti span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; padding:0 2px; }
+.ti:active, .ti.active { color:rgba(255,255,255,.85); }
+.ti:hover:not(.ti-cta) { color:var(--blue); }
+
+/* CTA center tab */
+.ti-cta {
+  flex:1.5;
+  background:var(--red);
+  color:white !important;
+  border-radius:12px 12px 0 0;
+  margin:0 4px;
+  box-shadow:0 -4px 20px rgba(255,2,4,.4);
+  font-size:9px; font-weight:700;
+}
+.ti-cta svg { width:20px; height:20px; }
+.ti-cta:active { background:var(--red2); }
+@media(min-width:960px){ .tab-bar { display:none; } }
+
+/* ══════════════════════════════════════════════
+   SECTION PADDING OFFSET (for fixed nav+tab)
+══════════════════════════════════════════════ */
+body { padding-top:var(--nav); }
+@media(min-width:960px){ body { padding-top:var(--nav); } }
+
+/* ══════════════════════════════════════════════
+   HERO — 320px base
+══════════════════════════════════════════════ */
+.hero {
+  position:relative; overflow:hidden;
+  min-height:calc(100svh - var(--nav));
+  display:flex; flex-direction:column; justify-content:flex-end;
+}
+
+/* BG image */
+.hero-bg {
+  position:absolute; inset:0; z-index:0;
+  overflow:hidden;
+}
+.hero-bg img {
+  width:100%; height:100%; object-fit:cover; object-position:center 20%;
+  display:block;
+}
+/* Multi-layer overlay: mostly transparent at top-right, dark at bottom, medium-dark at left */
+.hero-ov {
+  position:absolute; inset:0; z-index:1;
+  background:
+    linear-gradient(
+      112deg,
+      rgba(12,45,61,.88) 0%,
+      rgba(12,45,61,.65) 40%,
+      rgba(12,45,61,.18) 75%,
+      rgba(12,45,61,.08) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(8,18,26,.97) 0%,
+      rgba(8,18,26,.4) 35%,
+      transparent 65%
+    );
+}
+/* Grid texture */
+.hero-grid {
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size:48px 48px;
+}
+/* Glow */
+.hero-glow {
+  position:absolute; z-index:2; pointer-events:none;
+  width:360px; height:360px;
+  background:radial-gradient(circle, rgba(32,138,174,.2) 0%, transparent 70%);
+  top:-60px; right:5%;
+  animation:glowPulse 5s ease-in-out infinite;
+}
+/* Diagonal cut */
+.hero-cut {
+  position:absolute; bottom:-1px; left:0; right:0; z-index:4;
+  height:56px; background:var(--white);
+  clip-path:polygon(0 100%, 100% 100%, 100% 40%);
+}
+
+/* Hero content */
+.hero-body {
+  position:relative; z-index:3;
+  padding:40px 16px 72px;
+  display:flex; flex-direction:column; gap:0;
+}
+@media(min-width:390px){ .hero-body { padding:48px 20px 80px; } }
+
+.hero-badge {
+  display:inline-flex; align-items:center; gap:7px;
+  background:rgba(32,138,174,.18);
+  border:1px solid rgba(32,138,174,.38);
+  color:#7CCBE8; font-size:9px; font-weight:600;
+  letter-spacing:1.5px; text-transform:uppercase;
+  padding:5px 12px; border-radius:2px;
+  width:fit-content; margin-bottom:18px;
+  animation:fadeUp .6s ease both;
+}
+.badge-dot { width:5px; height:5px; background:var(--blue); border-radius:50%; animation:blink 2s ease-in-out infinite; }
+
+.hero-title {
+  font-family:var(--lora);
+  font-size:clamp(28px,8vw,36px);
+  font-weight:400; color:white; line-height:1.1;
+  margin-bottom:4px;
+  animation:fadeUp .6s .1s ease both;
+}
+.hero-title strong { font-weight:700; display:block; color:var(--cream); }
+.hero-title em { font-style:italic; color:rgba(255,255,255,.4); font-size:.72em; display:block; margin-top:3px; }
+
+.hero-desc {
+  font-size:13px; font-weight:300;
+  color:rgba(255,255,255,.62); line-height:1.8;
+  margin:16px 0 28px; max-width:520px;
+  animation:fadeUp .6s .2s ease both;
+}
+
+.hero-btns {
+  display:flex; flex-direction:column; gap:10px;
+  animation:fadeUp .6s .3s ease both;
+}
+@media(min-width:480px){ .hero-btns { flex-direction:row; } }
+
+.btn-p {
+  background:var(--red); color:white;
+  padding:13px 24px; border-radius:3px;
+  font-family:var(--mont); font-size:12px; font-weight:700;
+  text-decoration:none; text-align:center; letter-spacing:.3px;
+  transition:all .2s; display:block; position:relative; overflow:hidden;
+}
+.btn-p::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+  transform:translateX(-100%); transition:transform .4s;
+}
+.btn-p:hover { background:var(--red2); transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,2,4,.4); }
+.btn-p:hover::after { transform:translateX(100%); }
+
+.btn-g {
+  background:transparent; color:white;
+  padding:12px 24px; border-radius:3px;
+  border:1px solid rgba(255,255,255,.28);
+  font-family:var(--mont); font-size:12px; font-weight:400;
+  text-decoration:none; text-align:center;
+  transition:all .2s; display:block;
+}
+.btn-g:hover { border-color:var(--blue); color:var(--blue); background:rgba(32,138,174,.07); }
+
+.hero-stats {
+  display:flex; gap:24px; flex-wrap:wrap;
+  margin-top:36px; padding-top:28px;
+  border-top:1px solid rgba(255,255,255,.1);
+  animation:fadeUp .6s .4s ease both;
+}
+.stat { display:flex; flex-direction:column; gap:3px; }
+.sn { font-family:var(--lora); font-size:28px; font-weight:700; color:var(--cream); line-height:1; }
+.sl { font-size:9px; font-weight:400; color:rgba(255,255,255,.38); text-transform:uppercase; letter-spacing:.5px; }
+
+/* Desktop hero layout — 2 cols */
+@media(min-width:768px){
+  .hero { flex-direction:row; align-items:stretch; min-height:calc(100svh - var(--nav)); }
+  .hero-body { flex:1; justify-content:center; padding:64px 40px 96px 32px; }
+  .hero-img-col {
+    flex:1; position:relative; z-index:3;
+    display:flex; align-items:center; justify-content:center;
+    padding:64px 32px 96px 16px;
+  }
+  .hero-title { font-size:clamp(36px,4.5vw,56px); }
+  .hero-desc { font-size:15px; }
+  .sn { font-size:34px; }
+}
+@media(min-width:1024px){
+  .hero-body { padding:80px 48px 112px clamp(48px,5vw,80px); }
+  .hero-img-col { padding:80px clamp(48px,5vw,80px) 112px 16px; }
+}
+
+/* ── Hero image column ── */
+.hero-img-col { display:none; }
+@media(min-width:768px){ .hero-img-col { display:flex; } }
+
+.hero-img-wrap { position:relative; width:min(340px,90%); }
+.hero-img-frame {
+  width:100%; aspect-ratio:3/4; border-radius:8px; overflow:hidden;
+  box-shadow:0 40px 80px rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.08); position:relative;
+}
+.hero-img-frame img { width:100%; height:100%; object-fit:cover; filter:brightness(.85) saturate(.9); }
+.hero-img-ov {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(to top, rgba(12,45,61,.95) 0%, transparent 60%);
+  padding:28px 22px 20px;
+}
+.hero-img-school { font-family:var(--lora); font-size:17px; font-weight:600; color:white; display:block; }
+.hero-img-sub { font-size:10px; color:var(--blue); margin-top:3px; letter-spacing:1.2px; text-transform:uppercase; }
+.hero-card-sm {
+  position:absolute; top:-14px; right:-16px;
+  width:44%; aspect-ratio:1; border-radius:6px; overflow:hidden;
+  box-shadow:0 16px 40px rgba(0,0,0,.4);
+  border:2px solid rgba(255,255,255,.1);
+}
+.hero-card-sm img { width:100%; height:100%; object-fit:cover; filter:brightness(.8) saturate(.85); }
+.hero-float {
+  position:absolute; bottom:calc(10% + 20px); left:-20px;
+  background:var(--cream); border-radius:4px; padding:12px 16px;
+  box-shadow:0 16px 40px rgba(0,0,0,.28);
+  display:flex; align-items:center; gap:12px;
+  min-width:190px; animation:floatCard 3.5s ease-in-out infinite;
+  border-left:3px solid var(--red);
+  cursor:pointer; transition:box-shadow .2s, transform .2s;
+}
+.hero-float:hover {
+  box-shadow:0 20px 48px rgba(0,0,0,.36);
+  transform:translateY(-2px);
+  animation-play-state:paused;
+}
+.fi { width:36px; height:36px; background:var(--dark); border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+.ft strong { font-size:11px; color:var(--dark); font-weight:700; display:block; }
+.ft span { font-size:10px; color:var(--gray); margin-top:2px; display:block; font-weight:300; }
+.hero-vline {
+  position:absolute; right:-4px; top:22%; height:130px; width:2px;
+  background:linear-gradient(to bottom, transparent, var(--red), transparent); opacity:.5;
+}
+
+/* ══════════════════════════════════════════════
+   TRUST BAR
+══════════════════════════════════════════════ */
+.trust {
+  background:var(--cream);
+  border-bottom:1px solid var(--rule);
+  padding:12px 0;
+  overflow:hidden;
+}
+.trust-track {
+  display:flex; align-items:center;
+  gap:clamp(24px,4vw,48px);
+  width:max-content;
+  animation:trustScroll 22s linear infinite;
+  white-space:nowrap;
+}
+.trust-track:hover { animation-play-state:paused; }
+@keyframes trustScroll {
+  0%   { transform:translateX(0); }
+  100% { transform:translateX(-50%); }
+}
+.ti-trust { display:flex; align-items:center; gap:6px; font-size:10px; font-weight:500; color:var(--gray); flex-shrink:0; }
+.ti-trust svg { color:var(--red); width:13px; height:13px; flex-shrink:0; }
+
+/* ══════════════════════════════════════════════
+   SECTION UTILITIES
+══════════════════════════════════════════════ */
+.s { padding:clamp(48px,8vw,88px) 0; }
+.s-sm { padding:clamp(36px,6vw,64px) 0; }
+
+.slabel {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+  color:var(--blue); margin-bottom:10px;
+}
+.slabel::before { content:''; width:16px; height:1.5px; background:var(--blue); }
+.stitle {
+  font-family:var(--lora);
+  font-size:clamp(22px,5vw,40px);
+  font-weight:400; color:var(--dark); line-height:1.2; margin-bottom:12px;
+}
+.stitle em { font-style:italic; color:var(--blue); }
+.stitle strong { font-weight:700; }
+.sdesc { font-size:clamp(12px,1.4vw,14px); font-weight:300; color:var(--gray); line-height:1.85; max-width:480px; }
+
+/* ══════════════════════════════════════════════
+   WHY US
+══════════════════════════════════════════════ */
+.why-grid {
+  display:flex; flex-direction:column; gap:32px;
+}
+@media(min-width:768px){ .why-grid { flex-direction:row; align-items:center; gap:48px; } }
+@media(min-width:1024px){ .why-grid { gap:72px; } }
+.why-text { flex:1; min-width:0; }
+.why-cards {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px;
+}
+.wcard {
+  padding:16px; border:1px solid var(--rule); border-radius:4px;
+  transition:all .3s; cursor:default; position:relative; overflow:hidden;
+}
+.wcard::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--red), var(--blue));
+  transform:scaleX(0); transform-origin:left; transition:transform .35s;
+}
+.wcard:hover { border-color:rgba(32,138,174,.3); transform:translateY(-3px); box-shadow:0 12px 28px rgba(32,138,174,.1); }
+.wcard:hover::after { transform:scaleX(1); }
+.wcard-icon { font-size:20px; margin-bottom:8px; display:block; }
+.wcard h4 { font-family:var(--lora); font-size:14px; font-weight:600; margin-bottom:4px; color:var(--dark); }
+.wcard p { font-size:11px; color:var(--gray); line-height:1.65; font-weight:300; }
+.why-visual {
+  flex:1; min-width:0; position:relative;
+  padding-bottom:24px; padding-right:24px;
+}
+.why-main { width:100%; aspect-ratio:4/5; border-radius:6px; overflow:hidden; box-shadow:0 24px 56px rgba(12,45,61,.18); }
+.why-main img { width:100%; height:100%; object-fit:cover; }
+.why-accent {
+  position:absolute; bottom:0; right:0; width:46%; aspect-ratio:1;
+  border-radius:6px; overflow:hidden;
+  box-shadow:0 16px 36px rgba(255,2,4,.22);
+  border:3px solid var(--white);
+}
+.why-accent img { width:100%; height:100%; object-fit:cover; }
+.why-badge {
+  position:absolute; top:20px; left:-14px;
+  background:var(--cream); border-left:3px solid var(--blue);
+  padding:10px 14px; border-radius:0 3px 3px 0;
+  box-shadow:0 8px 22px rgba(0,0,0,.1);
+}
+.why-badge strong { font-size:11px; color:var(--dark); font-weight:700; display:block; }
+.why-badge span { font-size:9px; color:var(--blue); font-weight:600; text-transform:uppercase; letter-spacing:1px; }
+
+/* hide visual on very small screens */
+@media(max-width:479px){ .why-visual { display:none; } }
+@media(min-width:480px) and (max-width:767px){ .why-accent, .why-badge { display:none; } }
+
+/* ══════════════════════════════════════════════
+   NEWS
+══════════════════════════════════════════════ */
+.news-bg { background:var(--cream); }
+.news-hd { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px; gap:12px; }
+.news-lnk { font-size:11px; color:var(--blue); text-decoration:none; font-weight:600; white-space:nowrap; transition:color .2s; }
+.news-lnk:hover { color:var(--dark); }
+.news-grid {
+  display:flex; flex-direction:column; gap:14px;
+}
+@media(min-width:640px){ .news-grid { display:grid; grid-template-columns:1fr 1fr; } }
+@media(min-width:960px){ .news-grid { grid-template-columns:1.5fr 1fr 1fr; } }
+.ncard {
+  background:var(--white); border-radius:6px; overflow:hidden;
+  text-decoration:none; color:inherit; display:block;
+  transition:all .3s; box-shadow:0 2px 8px rgba(12,45,61,.06);
+}
+.ncard:hover { transform:translateY(-4px); box-shadow:0 18px 44px rgba(12,45,61,.14); }
+.nimg { overflow:hidden; }
+.nimg img { width:100%; object-fit:cover; transition:transform .4s; display:block; }
+.ncard:hover .nimg img { transform:scale(1.04); }
+.nimg-t img { height:clamp(180px,30vw,220px); }
+.nimg-s img { height:clamp(130px,20vw,160px); }
+.nbody { padding:16px; }
+.ntag { font-size:9px; font-weight:700; color:var(--blue); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:6px; display:block; }
+.ntitle { font-family:var(--lora); font-size:15px; font-weight:600; color:var(--dark); line-height:1.3; margin-bottom:6px; }
+.ncard:first-child .ntitle { font-size:18px; }
+.nexc { font-size:11px; color:var(--gray); line-height:1.7; font-weight:300; }
+.ndate { font-size:10px; color:var(--glt); margin-top:10px; display:block; }
+
+/* ══════════════════════════════════════════════
+   ADMISIONES CTA
+══════════════════════════════════════════════ */
+.adm-bg {
+  background:var(--dark); position:relative; overflow:hidden;
+}
+.adm-bg::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(ellipse at 80% 50%, rgba(32,138,174,.14) 0%, transparent 60%),
+             radial-gradient(ellipse at 15% 80%, rgba(255,2,4,.07) 0%, transparent 50%);
+}
+.adm-grid {
+  display:flex; flex-direction:column; gap:28px;
+  position:relative; z-index:1;
+}
+@media(min-width:768px){ .adm-grid { flex-direction:row; align-items:flex-start; gap:40px; } }
+.adm-left { flex:1; min-width:0; }
+.adm-left h2 { font-family:var(--lora); font-size:clamp(20px,4vw,34px); font-weight:400; color:white; line-height:1.2; margin-bottom:12px; }
+.adm-left h2 em { font-style:italic; color:var(--cream); }
+.adm-left > p { font-size:13px; color:rgba(255,255,255,.52); font-weight:300; line-height:1.8; }
+.adm-left > p a { color:var(--blue); text-decoration:none; font-weight:500; }
+.adm-note { margin-top:12px; display:flex; align-items:flex-start; gap:7px; font-size:11px; color:rgba(255,255,255,.35); font-weight:300; line-height:1.6; }
+.adm-note svg { flex-shrink:0; margin-top:2px; opacity:.5; width:12px; height:12px; }
+.adm-right { flex-shrink:0; display:flex; flex-direction:column; gap:8px; }
+@media(min-width:768px){ .adm-right { width:240px; } }
+.btn-sae-big {
+  background:var(--red); color:white; padding:13px 20px; border-radius:3px;
+  font-family:var(--mont); font-size:13px; font-weight:700;
+  text-decoration:none; display:block; text-align:center;
+  transition:all .2s; letter-spacing:.3px; position:relative; overflow:hidden;
+}
+.btn-sae-big::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.12), transparent);
+  transform:translateX(-100%); transition:transform .4s;
+}
+.btn-sae-big:hover { background:var(--red2); transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,2,4,.4); }
+.btn-sae-big:hover::after { transform:translateX(100%); }
+.btn-sae-sm {
+  background:transparent; color:rgba(255,255,255,.55);
+  padding:10px 20px; border-radius:3px; border:1px solid rgba(255,255,255,.18);
+  font-family:var(--mont); font-size:11px; font-weight:400;
+  text-decoration:none; display:block; text-align:center; transition:all .2s;
+}
+.btn-sae-sm:hover { border-color:var(--blue); color:var(--blue); }
+.adm-mini {
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+  border-radius:4px; padding:12px;
+}
+.adm-mini p { font-size:10px; color:rgba(255,255,255,.42); margin-bottom:9px; line-height:1.5; }
+.adm-input {
+  width:100%; padding:9px 11px; margin-bottom:7px;
+  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.13);
+  border-radius:3px; font-family:var(--mont); font-size:11px;
+  color:white; outline:none; transition:border-color .2s; display:block;
+}
+.adm-input::placeholder { color:rgba(255,255,255,.27); }
+.adm-input:focus { border-color:rgba(32,138,174,.6); }
+.adm-btn {
+  width:100%; padding:9px; background:var(--blue); color:white; border:none;
+  border-radius:3px; font-family:var(--mont); font-size:11px; font-weight:700;
+  cursor:pointer; transition:all .2s;
+}
+.adm-btn:hover { background:var(--blue2); }
+
+/* ══════════════════════════════════════════════
+   DOCUMENTS
+══════════════════════════════════════════════ */
+.docs-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:28px;
+}
+@media(min-width:640px){ .docs-grid { grid-template-columns:repeat(4,1fr); } }
+.dcard {
+  padding:16px 14px; border:1px solid var(--rule); border-radius:6px;
+  transition:all .3s; text-decoration:none; color:inherit; display:block;
+}
+.dcard:hover { border-color:var(--blue); transform:translateY(-3px); box-shadow:0 12px 28px rgba(32,138,174,.1); }
+.dicon { font-size:24px; margin-bottom:10px; display:block; }
+.dcard h4 { font-family:var(--lora); font-size:13px; font-weight:600; margin-bottom:4px; color:var(--dark); }
+.dcard p { font-size:10px; color:var(--gray); line-height:1.6; font-weight:300; }
+.dcnt { font-size:9px; color:var(--blue); font-weight:600; margin-top:8px; }
+
+/* ══════════════════════════════════════════════
+   CALENDAR
+══════════════════════════════════════════════ */
+.cal-bg { background:var(--cream); }
+.cal-layout {
+  display:flex; flex-direction:column; gap:20px; margin-top:28px;
+}
+@media(min-width:768px){ .cal-layout { flex-direction:row; align-items:flex-start; gap:32px; } }
+.cal-events { display:flex; flex-direction:column; gap:8px; flex:1; min-width:0; }
+.cev {
+  display:flex; align-items:center; gap:12px; padding:12px 14px;
+  background:var(--white); border-radius:4px; border:1px solid var(--rule);
+  transition:all .2s;
+}
+.cev:hover { border-color:var(--blue); box-shadow:0 4px 14px rgba(32,138,174,.09); }
+.cdate { min-width:44px; padding:6px; background:var(--dark); border-radius:3px; text-align:center; flex-shrink:0; }
+.cdn { font-family:var(--lora); font-size:20px; font-weight:700; color:var(--cream); display:block; line-height:1; }
+.cmn { font-size:8px; color:rgba(255,255,255,.35); text-transform:uppercase; letter-spacing:1px; margin-top:2px; display:block; }
+.cinfo h4 { font-size:12px; font-weight:600; color:var(--dark); margin-bottom:2px; }
+.cinfo p { font-size:10px; color:var(--gray); font-weight:300; }
+.ctag { margin-left:auto; flex-shrink:0; font-size:8px; font-weight:600; padding:2px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:.4px; }
+.tac { background:rgba(12,45,61,.08); color:var(--dark); }
+.tcu { background:rgba(32,138,174,.1); color:var(--blue2); }
+.tde { background:rgba(46,125,82,.1); color:#2E7D52; }
+.cal-widget { flex:1.1; min-width:0; background:var(--dark); border-radius:6px; overflow:hidden; }
+.cal-head { display:flex; justify-content:space-between; align-items:center; padding:13px 15px; border-bottom:1px solid rgba(255,255,255,.08); }
+.cal-head h3 { font-family:var(--lora); font-size:14px; font-weight:400; color:white; }
+.cal-nav { display:flex; gap:5px; }
+.cal-nav button { width:25px; height:25px; border:none; border-radius:3px; background:rgba(255,255,255,.07); color:rgba(255,255,255,.45); cursor:pointer; font-size:11px; transition:all .2s; }
+.cal-nav button:hover { background:rgba(32,138,174,.25); color:var(--blue); }
+.cal-inner { padding:12px 14px; }
+.cal-dn { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin-bottom:4px; }
+.cal-dn span { text-align:center; font-size:7px; font-weight:600; color:rgba(255,255,255,.2); letter-spacing:.4px; text-transform:uppercase; padding:2px 0; }
+.cal-days { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+.cd { aspect-ratio:1; display:flex; align-items:center; justify-content:center; font-size:10px; color:rgba(255,255,255,.38); border-radius:3px; cursor:pointer; transition:all .14s; position:relative; }
+.cd:hover { background:rgba(255,255,255,.07); color:white; }
+.cd.today { background:var(--red); color:white; font-weight:700; }
+.cd.hev::after { content:''; position:absolute; bottom:2px; width:3px; height:3px; border-radius:50%; background:var(--blue); }
+.cd.today::after { background:rgba(255,255,255,.7); }
+.cd.oth { opacity:.2; }
+
+/* ══════════════════════════════════════════════
+   CONTACT
+══════════════════════════════════════════════ */
+.contact-layout {
+  display:flex; flex-direction:column; gap:28px; margin-top:28px;
+}
+@media(min-width:768px){ .contact-layout { flex-direction:row; align-items:flex-start; gap:48px; } }
+.cinfo-col { flex:1; min-width:0; display:flex; flex-direction:column; gap:18px; }
+.citem { display:flex; gap:12px; align-items:flex-start; }
+.cicon { width:38px; height:38px; flex-shrink:0; background:var(--dark); border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:13px; }
+.citem strong { font-size:12px; font-weight:600; display:block; margin-bottom:2px; color:var(--dark); }
+.citem span { font-size:11px; color:var(--gray); font-weight:300; }
+
+/* Mobile CTA — shown BEFORE map */
+.mob-form-cta {
+  display:block;
+  padding:12px; background:var(--red); color:white;
+  border-radius:3px; text-align:center; text-decoration:none;
+  font-family:var(--mont); font-size:13px; font-weight:700;
+  transition:background .2s; margin-top:4px;
+}
+.mob-form-cta:hover { background:var(--red2); }
+@media(min-width:768px){ .mob-form-cta { display:none; } }
+
+.mapbox {
+  margin-top:14px; width:100%; height:140px;
+  background:linear-gradient(135deg,#EDE7D5 0%,#D5C9A8 100%);
+  border-radius:4px; border:1px solid var(--rule);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:6px; color:var(--gray); font-size:11px;
+}
+.cform-col {
+  flex:1; min-width:0;
+  background:var(--off); border-radius:6px;
+  padding:clamp(18px,4vw,32px); border:1px solid var(--rule);
+}
+.cform-ttl { font-family:var(--lora); font-size:19px; font-weight:600; color:var(--dark); margin-bottom:4px; }
+.cform-sub { font-size:11px; color:var(--gray); margin-bottom:20px; font-weight:300; }
+.fg { display:flex; flex-direction:column; gap:4px; margin-bottom:10px; }
+.fg label { font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--dark); }
+.fg input, .fg select, .fg textarea {
+  padding:9px 12px; border:1px solid #DDD8CE; border-radius:3px;
+  font-family:var(--mont); font-size:12px; color:var(--dark);
+  background:var(--white); outline:none; transition:border-color .2s;
+}
+.fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--blue); }
+.fg textarea { min-height:76px; resize:vertical; }
+.fg-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media(max-width:360px){ .fg-row { grid-template-columns:1fr; } }
+.btn-sub {
+  width:100%; padding:12px; background:var(--red); color:white; border:none;
+  border-radius:3px; font-family:var(--mont); font-size:12px; font-weight:700;
+  cursor:pointer; transition:all .2s; letter-spacing:.3px;
+}
+.btn-sub:hover { background:var(--red2); transform:translateY(-1px); box-shadow:0 6px 18px rgba(255,2,4,.35); }
+
+/* ══════════════════════════════════════════════
+   SOCIAL STRIP
+══════════════════════════════════════════════ */
+.soc-strip { background:var(--dark2); padding:28px 0; border-top:1px solid rgba(255,255,255,.05); }
+.soc-inner { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+.soc-txt strong { font-family:var(--lora); font-size:16px; font-weight:400; color:white; display:block; margin-bottom:2px; }
+.soc-txt span { font-size:11px; color:rgba(255,255,255,.3); font-weight:300; }
+.soc-links { display:flex; gap:8px; }
+.sa { width:38px; height:38px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); border-radius:3px; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.4); text-decoration:none; transition:all .2s; }
+.sa:hover { background:rgba(32,138,174,.18); border-color:var(--blue); color:var(--blue); }
+.sa svg { width:15px; height:15px; }
+
+/* ══════════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════════ */
+footer { background:#060E13; padding:36px 0 20px; }
+.foot-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:28px;
+  padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,.06);
+}
+@media(min-width:640px){ .foot-grid { grid-template-columns:2fr 1fr 1fr 1fr; } }
+.fb p { font-size:11px; color:rgba(255,255,255,.28); font-weight:300; line-height:1.8; margin-top:12px; max-width:200px; }
+.fc h5 { font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+.fc ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.fc a { font-size:11px; color:rgba(255,255,255,.3); text-decoration:none; font-weight:300; transition:color .2s; }
+.fc a:hover { color:white; }
+.foot-bot { display:flex; justify-content:space-between; align-items:center; padding-top:16px; flex-wrap:wrap; gap:8px; }
+.foot-bot p { font-size:10px; color:rgba(255,255,255,.18); }
+.foot-bot a { color:rgba(32,138,174,.4); text-decoration:none; }
+
+/* ══════════════════════════════════════════════
+   WHATSAPP FLOAT
+══════════════════════════════════════════════ */
+.wa { position:fixed; z-index:700; width:50px; height:50px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 22px rgba(37,211,102,.4); text-decoration:none; animation:waPulse 2.5s ease-in-out infinite; transition:transform .2s; }
+.wa { bottom:calc(var(--tab) + 16px); right:16px; }
+@media(min-width:960px){ .wa { bottom:24px; right:20px; } }
+.wa:hover { transform:scale(1.1); }
+.wa svg { width:22px; height:22px; }
+
+/* ══════════════════════════════════════════════
+   REVEAL ANIMATION
+══════════════════════════════════════════════ */
+.rv { opacity:0; transform:translateY(20px); transition:opacity .7s ease, transform .7s ease; }
+.rv.on { opacity:1; transform:translateY(0); }
+
+/* ══════════════════════════════════════════════
+   KEYFRAMES
+══════════════════════════════════════════════ */
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);} }
+@keyframes floatCard { 0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);} }
+@keyframes waPulse { 0%,100%{box-shadow:0 8px 22px rgba(37,211,102,.4);}50%{box-shadow:0 8px 32px rgba(37,211,102,.65);} }
+@keyframes glowPulse { 0%,100%{opacity:1;}50%{opacity:.55;} }
+@keyframes blink { 0%,100%{opacity:1;}50%{opacity:.3;} }
+
+/* ══════════════════════════════════════════════
+   iPad portrait — 768px
+══════════════════════════════════════════════ */
+@media(min-width:768px) and (max-width:1023px) and (orientation:portrait){
+  .hero { min-height:calc(100svh - var(--nav)); }
+  .hero-body {
+    /* On iPad portrait: content fills full width with more padding */
+    padding:60px 48px 100px;
+    justify-content:center;
+  }
+  .hero-title { font-size:clamp(38px,6vw,48px); }
+  .hero-desc { font-size:15px; max-width:560px; }
+  .hero-btns { flex-direction:row; }
+  .hero-stats { gap:32px; }
+  .sn { font-size:32px; }
+}
+</style>
+</head>
+<body class="has-announce">
+
+<!-- ══ MOBILE TOP BAR ══ -->
+<!-- ══ ANNOUNCEMENT BAR ══ -->
+<!-- Activable desde Strapi: campo "aviso_activo" + "aviso_texto" -->
+<div class="announce-bar" id="announceBar">
+  <div class="announce-dot"></div>
+  <span>📅 &nbsp;Período de postulación SAE 2026 abierto &mdash; <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank">Postula aquí →</a></span>
+  <button class="announce-close" onclick="document.getElementById('announceBar').remove();document.body.classList.remove('has-announce');" aria-label="Cerrar aviso">×</button>
+</div>
+
+<header class="mob-topbar">
+  <a href="#" class="nav-logo" style="text-decoration:none; display:flex; align-items:center; gap:10px;">
+    <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+  </a>
+</header>
+
+<!-- ══ DESKTOP NAV ══ -->
+<nav class="desk-nav">
+  <div class="c desk-nav-inner">
+    <a href="#" class="nav-logo" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+      <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+      <div class="nav-logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="admisiones.html">Admisiones</a></li>
+      <li><a href="#noticias">Noticias</a></li>
+      <li><a href="#documentos">Documentos</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a href="#admisiones" class="nav-cta-d">Inscribir a mi hijo</a>
+  </div>
+</nav>
+
+<!-- ══ BOTTOM TAB BAR ══ -->
+<div class="tab-bar">
+  <div class="tab-items">
+    <a href="#nosotros" class="ti">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Inicio</span>
+    </a>
+    <a href="#noticias" class="ti">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"/><line x1="17" y1="12" x2="7" y2="12"/><line x1="17" y1="16" x2="7" y2="16"/><line x1="10" y1="8" x2="7" y2="8"/></svg>
+      <span>Noticias</span>
+    </a>
+    <a href="#admisiones" class="ti ti-cta">
+      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      <span>Inscribir</span>
+    </a>
+    <a href="#documentos" class="ti">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>Docs</span>
+    </a>
+    <a href="#contacto" class="ti">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <span>Contacto</span>
+    </a>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero" id="inicio">
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&q=80" alt="" loading="eager"></div>
+  <div class="hero-ov"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-body c">
+    <div class="hero-badge"><div class="badge-dot"></div>Admisiones 2026 · SAE abierto</div>
+    <h1 class="hero-title">
+      Educación que
+      <strong>inspira el potencial</strong>
+      <em>de cada estudiante</em>
+    </h1>
+    <p class="hero-desc">En Da Vinci School formamos personas íntegras con inglés desde Pre-Básica, pensamiento crítico y valores sólidos. Un ambiente donde cada niño descubre su camino.</p>
+    <div class="hero-btns">
+      <a href="#admisiones" class="btn-p">Quiero inscribir a mi hijo</a>
+      <a href="#nosotros" class="btn-g">Conocer el colegio</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="sn">Pre-K</span><span class="sl">hasta 4° Medio</span></div>
+      <div class="stat"><span class="sn">Inglés</span><span class="sl">desde Pre-Básica</span></div>
+      <div class="stat"><span class="sn">PIE</span><span class="sl">Inclusión escolar</span></div>
+    </div>
+  </div>
+
+  <!-- Desktop image col -->
+  <div class="hero-img-col">
+    <div class="hero-img-wrap">
+      <div class="hero-img-frame">
+        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80" alt="Estudiantes Da Vinci School">
+        <div class="hero-img-ov">
+          <span class="hero-img-school">Comunidad Da Vinci</span>
+          <span class="hero-img-sub">Puerto Montt · Chile</span>
+        </div>
+      </div>
+      <div class="hero-card-sm">
+        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=300&q=80" alt="Actividades">
+      </div>
+      <a href="#admisiones" class="hero-float" style="text-decoration:none;">
+        <div class="fi">🎓</div>
+        <div class="ft"><strong>Elige Da Vinci</strong><span>Postula a través del SAE →</span></div>
+      </a>
+    </div>
+    <div class="hero-vline"></div>
+  </div>
+
+  <div class="hero-cut"></div>
+</section>
+
+<!-- ══ TRUST BAR ══ -->
+<div class="trust">
+  <div class="trust-track">
+    <!-- set 1 -->
+    <div class="ti-trust"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>Reconocido MINEDUC</div>
+    <div class="ti-trust"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>Inglés desde Pre-Básica</div>
+    <div class="ti-trust"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>Programa PIE</div>
+    <div class="ti-trust"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h18v18H3zM9 9h6M9 12h6M9 15h4"/></svg>Comedor JUNAEB</div>
+    <div class="ti-trust"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Talleres extraprogramáticos</div>
+    <!-- set 2 — duplicate for seamless loop -->
+    <div class="ti-trust" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>Reconocido MINEDUC</div>
+    <div class="ti-trust" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>Inglés desde Pre-Básica</div>
+    <div class="ti-trust" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>Programa PIE</div>
+    <div class="ti-trust" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h18v18H3zM9 9h6M9 12h6M9 15h4"/></svg>Comedor JUNAEB</div>
+    <div class="ti-trust" aria-hidden="true"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Talleres extraprogramáticos</div>
+  </div>
+</div>
+
+<!-- ══ WHY US ══ -->
+<section class="s rv" id="nosotros">
+  <div class="c">
+    <div class="why-grid">
+      <div class="why-text">
+        <div class="slabel">¿Por qué Da Vinci?</div>
+        <h2 class="stitle">Donde el talento <em>encuentra</em> su camino</h2>
+        <p class="sdesc">Combinamos rigor académico, inglés integrado y un ambiente inclusivo donde cada estudiante crece a su propio ritmo.</p>
+        <div class="why-cards">
+          <div class="wcard"><span class="wcard-icon">🌍</span><h4>Inglés desde Pre-Básica</h4><p>El inglés integrado en toda la malla. Una herramienta para la vida.</p></div>
+          <div class="wcard"><span class="wcard-icon">🤝</span><h4>Programa PIE</h4><p>Acompañamiento para estudiantes con necesidades educativas especiales.</p></div>
+          <div class="wcard"><span class="wcard-icon">🎨</span><h4>Talleres</h4><p>Formación integral que desarrolla talentos más allá de lo académico.</p></div>
+          <div class="wcard"><span class="wcard-icon">🍽️</span><h4>Comedor JUNAEB</h4><p>Alimentación asegurada. Un beneficio concreto para las familias.</p></div>
+        </div>
+      </div>
+      <div class="why-visual">
+        <div class="why-main"><img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80" alt="Aulas"></div>
+        <div class="why-accent"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80" alt="Actividades"></div>
+        <div class="why-badge"><strong>Bilingüe desde el día 1</strong><span>Pre-Básica → 4° Medio</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NEWS ══ -->
+<section class="s news-bg rv" id="noticias">
+  <div class="c">
+    <div class="news-hd">
+      <div><div class="slabel">Comunidad Da Vinci</div><h2 class="stitle">Últimas <em>noticias</em></h2></div>
+      <a href="/noticias" class="news-lnk">Ver todas →</a>
+    </div>
+    <div class="news-grid">
+      <a href="#" class="ncard">
+        <div class="nimg nimg-t"><img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&q=80" alt=""></div>
+        <div class="nbody"><span class="ntag">Académico</span><h3 class="ntitle">Resultados históricos SIMCE: Da Vinci lidera en la región</h3><p class="nexc">Nuestros estudiantes obtuvieron puntajes sobre el promedio nacional en Lenguaje y Matemáticas.</p><span class="ndate">15 de noviembre, 2024</span></div>
+      </a>
+      <a href="#" class="ncard">
+        <div class="nimg nimg-s"><img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt=""></div>
+        <div class="nbody"><span class="ntag">Cultural</span><h3 class="ntitle">Festival de Arte 2024: creatividad sin límites</h3><p class="nexc">Más de 200 obras en nuestra muestra anual de arte estudiantil.</p><span class="ndate">8 de noviembre, 2024</span></div>
+      </a>
+      <a href="#" class="ncard">
+        <div class="nimg nimg-s"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt=""></div>
+        <div class="nbody"><span class="ntag">Deportivo</span><h3 class="ntitle">Equipo avanza a semifinales del campeonato interescolar</h3><p class="nexc">El equipo de básquetbol entre los 4 mejores colegios de la provincia.</p><span class="ndate">2 de noviembre, 2024</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ADMISIONES ══ -->
+<section class="s adm-bg rv" id="admisiones">
+  <div class="c">
+    <div class="adm-grid">
+      <div class="adm-left">
+        <div class="slabel" style="color:rgba(255,255,255,.42);">Admisiones 2026</div>
+        <h2>¿Quieres que tu hijo <em>sea parte de Da Vinci?</em></h2>
+        <p>Las admisiones se gestionan a través del Sistema de Admisión Escolar (SAE) del Ministerio de Educación, de forma gratuita y en línea. Si tienes dudas antes de postular, <a href="#contacto-form">escríbenos</a> y te orientamos.</p>
+        <div class="adm-note">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          También puedes anotarte en la lista de espera en cualquier momento del año.
+        </div>
+      </div>
+      <div class="adm-right">
+        <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank" class="btn-sae-big">Postular vía SAE →</a>
+        <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank" class="btn-sae-sm">Anótate en lista de espera</a>
+        <div class="adm-mini">
+          <p>¿Tienes preguntas? Déjanos tu contacto y te llamamos.</p>
+          <input class="adm-input" type="text" placeholder="Tu nombre">
+          <input class="adm-input" type="tel" placeholder="Teléfono o WhatsApp">
+          <button class="adm-btn" onclick="this.textContent='✓ Te contactamos pronto';this.style.background='#2E7D52';this.disabled=true;">Quiero que me contacten</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DOCUMENTOS ══ -->
+<section class="s-sm rv" id="documentos">
+  <div class="c">
+    <div class="slabel">Área de apoderados</div>
+    <h2 class="stitle">Documentos y <em>recursos</em></h2>
+    <div class="docs-grid">
+      <a href="/documentos" class="dcard"><span class="dicon">📄</span><h4>Boletines</h4><p>Calificaciones por semestre y asignatura.</p><div class="dcnt">Disponibles</div></a>
+      <a href="/documentos" class="dcard"><span class="dicon">📚</span><h4>Lista de útiles</h4><p>Materiales por nivel para el año escolar.</p><div class="dcnt">Actualizado</div></a>
+      <a href="/documentos" class="dcard"><span class="dicon">📢</span><h4>Circulares</h4><p>Comunicados oficiales del colegio.</p><div class="dcnt">Última: esta semana</div></a>
+      <a href="/recursos" class="dcard"><span class="dicon">🔗</span><h4>Recursos educativos</h4><p>Plataformas y materiales de apoyo.</p><div class="dcnt">Khan Academy · +8</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CALENDARIO ══ -->
+<section class="s cal-bg rv" id="calendario">
+  <div class="c">
+    <div style="text-align:center;"><div class="slabel" style="justify-content:center;">Agenda escolar</div><h2 class="stitle" style="text-align:center;">Actividades <em>programadas</em></h2></div>
+    <div class="cal-layout">
+      <div class="cal-events">
+        <div class="cev"><div class="cdate"><span class="cdn">18</span><span class="cmn">Nov</span></div><div class="cinfo"><h4>Consejo de Profesores</h4><p>Sala de Reuniones · 15:00 hrs</p></div><span class="ctag tac">Académico</span></div>
+        <div class="cev"><div class="cdate"><span class="cdn">22</span><span class="cmn">Nov</span></div><div class="cinfo"><h4>Acto de Clausura 2024</h4><p>Auditorio principal · 10:00 hrs</p></div><span class="ctag tcu">Cultural</span></div>
+        <div class="cev"><div class="cdate"><span class="cdn">28</span><span class="cmn">Nov</span></div><div class="cinfo"><h4>Taller de Robótica abierto</h4><p>Sala de computación · 14:00 hrs</p></div><span class="ctag tde">Taller</span></div>
+        <div class="cev"><div class="cdate"><span class="cdn">05</span><span class="cmn">Dic</span></div><div class="cinfo"><h4>Graduación 4° Medio</h4><p>Teatro Municipal · 19:00 hrs</p></div><span class="ctag tcu">Cultural</span></div>
+      </div>
+      <div class="cal-widget">
+        <div class="cal-head"><h3>Noviembre 2024</h3><div class="cal-nav"><button>‹</button><button>›</button></div></div>
+        <div class="cal-inner">
+          <div class="cal-dn"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span></div>
+          <div class="cal-days" id="calDays"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACTO ══ -->
+<section class="s rv" id="contacto">
+  <div class="c">
+    <div class="slabel">Escríbenos</div>
+    <h2 class="stitle">¿Tienes alguna <em>consulta?</em></h2>
+    <div class="contact-layout">
+      <div class="cinfo-col">
+        <p class="sdesc" style="max-width:none;">Estamos aquí para ayudarte. Escríbenos por el <a href="#contacto-form" style="color:var(--blue);font-weight:500;text-decoration:none;">formulario</a> o visítanos en el colegio.</p>
+        <div class="citem"><div class="cicon">📍</div><div><strong>Dirección</strong><span>Calle ejemplo 1234, Puerto Montt</span></div></div>
+        <div class="citem"><div class="cicon">📞</div><div><strong>Teléfono</strong><span>+56 65 2 XXX XXX</span></div></div>
+        <div class="citem"><div class="cicon">✉️</div><div><strong>Correo</strong><span>contacto&#64;davincischool&#46;cl</span></div></div>
+        <div class="citem"><div class="cicon">🕐</div><div><strong>Horario</strong><span>Lunes a Viernes · 8:00 a 17:00 hrs</span></div></div>
+        <!-- Mobile CTA BEFORE map -->
+        <a href="#contacto-form" class="mob-form-cta">Enviar un mensaje →</a>
+        <div style="margin-top:14px;border-radius:4px;overflow:hidden;border:1px solid var(--rule);">
+          <iframe
+            src="https://maps.google.com/maps?q=Jard%C3%ADn+Oriente+1%2C+Calle+Aer%C3%B3dromo%2C+Puerto+Montt%2C+Chile&output=embed&z=16"
+            width="100%" height="180" style="border:0;display:block;"
+            allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Ubicación Da Vinci School">
+          </iframe>
+        </div>
+      </div>
+      <div class="cform-col" id="contacto-form">
+        <h3 class="cform-ttl">Envíanos un mensaje</h3>
+        <p class="cform-sub">Te contactaremos en menos de 24 horas hábiles.</p>
+        <div class="fg-row">
+          <div class="fg"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
+          <div class="fg"><label>Apellido</label><input type="text" placeholder="Tu apellido"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Correo</label><input type="email" placeholder="tucorreo@mail.com"></div>
+          <div class="fg"><label>Teléfono</label><input type="tel" placeholder="+56 9 XXXX XXXX"></div>
+        </div>
+        <div class="fg">
+          <label>Motivo</label>
+          <select>
+            <option value="">Selecciona una opción</option>
+            <option>Información sobre admisiones</option>
+            <option>Consulta académica</option>
+            <option>Programa bilingüe</option>
+            <option>Programa PIE</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="fg"><label>Mensaje</label><textarea placeholder="¿En qué podemos ayudarte?"></textarea></div>
+        <button class="btn-sub" onclick="this.textContent='✓ Mensaje enviado';this.style.background='#2E7D52';setTimeout(()=>{this.textContent='Enviar mensaje';this.style.background='';},3000)">Enviar mensaje</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SOCIAL ══ -->
+<div class="soc-strip">
+  <div class="c soc-inner">
+    <div class="soc-txt"><strong>Síguenos en redes sociales</strong><span>Mantente al día con la vida del colegio</span></div>
+    <div class="soc-links">
+      <a href="https://www.instagram.com/davincischoolpm/" target="_blank" class="sa" title="Instagram"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>
+      <a href="https://www.facebook.com/profile.php?id=61583505364618" target="_blank" class="sa" title="Facebook"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+      <a href="https://wa.me/56912345678" target="_blank" class="sa" title="WhatsApp"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="c">
+    <div class="foot-grid">
+      <div class="fb">
+        <a href="#" style="text-decoration:none; display:flex; align-items:center; gap:10px;">
+          <img src="logo-davinci.png" width="32" height="32" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+          <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+        </a>
+        <p>Formando personas íntegras, creativas y bilingües desde Pre-Básica hasta 4° Medio.</p>
+      </div>
+      <div class="fc"><h5>El colegio</h5><ul><li><a href="#">Nosotros</a></li><li><a href="#">Bilingüismo</a></li><li><a href="#">Talleres</a></li><li><a href="#">PIE</a></li><li><a href="#">Admisiones SAE</a></li></ul></div>
+      <div class="fc"><h5>Apoderados</h5><ul><li><a href="#">Boletines</a></li><li><a href="#">Calendario</a></li><li><a href="#">Circulares</a></li><li><a href="#">Útiles</a></li></ul></div>
+      <div class="fc"><h5>Más</h5><ul><li><a href="#">Noticias</a></li><li><a href="#">Galería</a></li><li><a href="#">Recursos</a></li><li><a href="#">Contacto</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <p>© 2026 Da Vinci School · <a href="#">davincischool.cl</a></p>
+      <a href="https://volantin.cl" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:3px;text-decoration:none;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.3px;transition:all .2s" onmouseenter="this.style.background='rgba(32,138,174,.15)';this.style.borderColor='rgba(32,138,174,.4)';this.style.color='white'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.borderColor='rgba(255,255,255,.1)';this.style.color='rgba(255,255,255,.5)'">
+        <svg width="10" height="10" fill="none" stroke="#208AAE" stroke-width="2.2" viewBox="0 0 24 24" style="flex-shrink:0"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Diseñado por <span style="color:#208AAE;font-weight:700;margin-left:2px;">Volantín Creativo</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ WHATSAPP ══ -->
+<a href="https://wa.me/56912345678" class="wa" target="_blank" title="WhatsApp">
+  <svg fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// ── CALENDAR ──
+(function(){
+  const el=document.getElementById('calDays'); if(!el) return;
+  const evs=[18,22,28];
+  const fd=new Date(2024,10,1).getDay();
+  const off=fd===0?6:fd-1;
+  const pv=new Date(2024,10,0).getDate();
+  let h='';
+  for(let i=off-1;i>=0;i--) h+=`<div class="cd oth">${pv-i}</div>`;
+  for(let d=1;d<=30;d++) h+=`<div class="cd${d===18?' today':''}${evs.includes(d)?' hev':''}">${d}</div>`;
+  el.innerHTML=h;
+})();
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.07});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// ── SMOOTH SCROLL ──
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+</body>
+</html>

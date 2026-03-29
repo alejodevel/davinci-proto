@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Galería — Da Vinci School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark:#0C2D3D;--dark2:#081E2A;--red:#FF0204;--red2:#CC0103;
+  --blue:#208AAE;--blue2:#1A6F8C;--cream:#F8F2DC;--gray:#706566;
+  --glt:#A09899;--white:#FFFFFF;--off:#FAFAF8;--rule:#E8E2D0;
+  --lora:'Lora',Georgia,serif;--mont:'Montserrat',sans-serif;
+  --nav:56px;--tab:60px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--mont);background:var(--white);color:var(--dark);overflow-x:hidden;-webkit-text-size-adjust:100%;padding-bottom:var(--tab);padding-top:var(--nav);}
+img{display:block;max-width:100%;height:auto;}
+.c{width:100%;max-width:1200px;margin:0 auto;padding:0 clamp(16px,4vw,48px);}
+
+/* ── ANNOUNCE ── */
+.announce-bar{position:fixed;top:0;left:0;right:0;z-index:790;background:var(--blue);padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:11px;font-weight:600;color:white;}
+.announce-bar a{color:white;text-decoration:underline;text-underline-offset:2px;}
+.announce-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.7);font-size:16px;cursor:pointer;padding:4px;}
+.announce-dot{width:6px;height:6px;background:var(--cream);border-radius:50%;flex-shrink:0;animation:blinkAnn 2s ease-in-out infinite;}
+@keyframes blinkAnn{0%,100%{opacity:.8;}50%{opacity:.3;}}
+body.has-announce{--ah:34px;}
+body.has-announce .mob-topbar,body.has-announce .desk-nav{top:var(--ah);}
+body.has-announce{padding-top:calc(var(--nav) + var(--ah));}
+
+/* ── NAV ── */
+.mob-topbar{position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 clamp(16px,4vw,20px);gap:10px;}
+@media(min-width:960px){.mob-topbar{display:none;}}
+.logo-txt,.nav-logo-txt{font-family:var(--lora);font-size:15px;font-weight:600;color:white !important;line-height:1.15;}
+.logo-txt span,.nav-logo-txt span{display:block;font-size:9px;font-weight:400;color:rgba(255,255,255,.38) !important;font-family:var(--mont);letter-spacing:1.5px;text-transform:uppercase;}
+.desk-nav{display:none;position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);align-items:center;}
+.desk-nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;}
+.nav-links{display:flex;align-items:center;gap:24px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:3px;}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nav-links a:hover{color:white;}.nav-links a:hover::after{transform:scaleX(1);}
+.nav-links a.active{color:white;}.nav-links a.active::after{transform:scaleX(1);background:var(--red);}
+.nav-cta-d{background:var(--red);color:white;padding:8px 18px;border-radius:3px;font-family:var(--mont);font-size:11px;font-weight:700;text-decoration:none;letter-spacing:.3px;transition:all .2s;flex-shrink:0;}
+.nav-cta-d:hover{background:var(--red2);box-shadow:0 4px 16px rgba(255,2,4,.4);transform:translateY(-1px);}
+.desk-nav a{color:white !important;text-decoration:none;}
+@media(min-width:960px){.desk-nav{display:flex;}body{padding-bottom:0;}}
+
+/* ── TAB BAR ── */
+.tab-bar{position:fixed;bottom:0;left:0;right:0;z-index:800;height:var(--tab);background:rgba(10,26,37,.98);backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.1);padding-bottom:env(safe-area-inset-bottom,0);}
+.tab-items{display:flex;align-items:stretch;height:100%;width:100%;}
+.ti{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:rgba(255,255,255,.4);font-size:9px;font-weight:600;letter-spacing:.2px;text-transform:uppercase;padding:4px 0;border:none;background:none;-webkit-tap-highlight-color:transparent;transition:color .15s;min-width:0;}
+.ti svg{width:18px;height:18px;flex-shrink:0;}
+.ti span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;padding:0 2px;}
+.ti:active{color:rgba(255,255,255,.85);}.ti:hover:not(.ti-cta){color:var(--blue);}
+.ti-cta{flex:1.5;background:var(--red);color:white !important;border-radius:12px 12px 0 0;margin:0 4px;box-shadow:0 -4px 20px rgba(255,2,4,.4);font-size:9px;font-weight:700;}
+.ti-cta svg{width:20px;height:20px;}
+@media(min-width:960px){.tab-bar{display:none;}}
+
+/* ── PAGE HERO ── */
+.page-hero{position:relative;overflow:hidden;height:clamp(240px,32vw,380px);display:flex;flex-direction:column;justify-content:flex-end;}
+.page-hero-bg{position:absolute;inset:0;overflow:hidden;}
+.page-hero-bg img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block;}
+.page-hero-ov{position:absolute;inset:0;background:linear-gradient(112deg,rgba(12,45,61,.78) 0%,rgba(12,45,61,.48) 45%,rgba(12,45,61,.12) 100%),linear-gradient(to top,rgba(8,18,26,.88) 0%,rgba(8,18,26,.2) 45%,transparent 70%);}
+.page-hero-grid{position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;}
+.page-hero-body{position:relative;z-index:2;padding:clamp(20px,4vw,44px) 0 clamp(52px,8vw,64px);}
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:10px;font-weight:500;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.breadcrumb a{color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s;}.breadcrumb a:hover{color:white;}
+.breadcrumb span{color:rgba(255,255,255,.25);}
+.page-title{font-family:var(--lora);font-size:clamp(26px,5vw,52px);font-weight:400;color:white;line-height:1.1;}
+.page-title em{font-style:italic;color:var(--cream);}
+.page-cut{position:absolute;bottom:-1px;left:0;right:0;height:48px;background:var(--white);clip-path:polygon(0 100%,100% 100%,100% 0);z-index:3;}
+
+/* ── FILTERS ── */
+.filters-bar{padding:24px 0 0;border-bottom:1px solid var(--rule);}
+.filters-inner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-bottom:0;}
+.filter-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--rule);background:white;font-family:var(--mont);font-size:11px;font-weight:500;color:var(--gray);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.filter-btn:hover{border-color:var(--blue);color:var(--blue);}
+.filter-btn.active{background:var(--dark);border-color:var(--dark);color:white;}
+
+/* ── GALLERY SECTION ── */
+.gallery-section{padding:clamp(28px,5vw,56px) 0;}
+
+/* Masonry grid using CSS columns */
+.masonry{
+  columns:2;
+  column-gap:10px;
+}
+@media(min-width:640px){.masonry{columns:3;}}
+@media(min-width:960px){.masonry{columns:4;}}
+
+.gitem{
+  break-inside:avoid;
+  margin-bottom:10px;
+  position:relative;
+  overflow:hidden;
+  border-radius:6px;
+  cursor:pointer;
+  display:block;
+}
+.gitem img{
+  width:100%;
+  display:block;
+  transition:transform .4s ease;
+}
+.gitem:hover img{transform:scale(1.05);}
+.gitem-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(12,45,61,.85) 0%,transparent 55%);
+  opacity:0;
+  transition:opacity .3s;
+  display:flex;align-items:flex-end;
+  padding:14px;
+}
+.gitem:hover .gitem-overlay{opacity:1;}
+.gitem-label{font-size:11px;font-weight:500;color:white;line-height:1.3;}
+.gitem-cat{font-size:9px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:3px;}
+
+/* ── LIGHTBOX ── */
+.lightbox{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(8,18,26,.96);
+  display:none;
+  align-items:center;justify-content:center;
+  padding:clamp(16px,4vw,48px);
+}
+.lightbox.open{display:flex;}
+.lb-inner{position:relative;max-width:1000px;width:100%;max-height:90vh;}
+.lb-img{
+  width:100%;max-height:80vh;
+  object-fit:contain;border-radius:4px;
+  display:block;
+}
+.lb-close{
+  position:fixed;top:20px;right:20px;
+  width:40px;height:40px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  border-radius:50%;color:white;font-size:20px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;
+  line-height:1;
+}
+.lb-close:hover{background:rgba(255,2,4,.4);border-color:var(--red);}
+.lb-nav{
+  position:fixed;top:50%;transform:translateY(-50%);
+  width:44px;height:44px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);
+  border-radius:50%;color:white;font-size:20px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;
+}
+.lb-nav:hover{background:rgba(32,138,174,.4);border-color:var(--blue);}
+.lb-prev{left:16px;}
+.lb-next{right:16px;}
+.lb-caption{position:absolute;bottom:-40px;left:0;right:0;text-align:center;}
+.lb-caption-text{font-size:12px;color:rgba(255,255,255,.6);font-weight:300;}
+.lb-counter{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px;}
+
+/* ── FOOTER ── */
+footer{background:#060E13;padding:36px 0 20px;}
+.foot-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.06);}
+@media(min-width:640px){.foot-grid{grid-template-columns:2fr 1fr 1fr 1fr;}}
+.fb p{font-size:11px;color:rgba(255,255,255,.28);font-weight:300;line-height:1.8;margin-top:12px;max-width:200px;}
+.fc h5{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.fc a{font-size:11px;color:rgba(255,255,255,.3);text-decoration:none;font-weight:300;transition:color .2s;}
+.fc a:hover{color:white;}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;padding-top:16px;flex-wrap:wrap;gap:8px;}
+.foot-bot p{font-size:10px;color:rgba(255,255,255,.18);}
+.foot-bot a{color:rgba(32,138,174,.4);text-decoration:none;}
+.wa{position:fixed;z-index:700;width:50px;height:50px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s;bottom:calc(var(--tab) + 16px);right:16px;}
+@media(min-width:960px){.wa{bottom:24px;right:20px;}}
+.wa:hover{transform:scale(1.1);}
+.wa svg{width:22px;height:22px;}
+</style>
+</head>
+<body class="has-announce">
+
+<div class="announce-bar" id="announceBar">
+  <div class="announce-dot"></div>
+  <span>📅 &nbsp;Período de postulación SAE 2026 abierto &mdash; <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank">Postula aquí →</a></span>
+  <button class="announce-close" onclick="document.getElementById('announceBar').remove();document.body.classList.remove('has-announce');" aria-label="Cerrar">×</button>
+</div>
+
+<header class="mob-topbar">
+  <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+    <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+  </a>
+</header>
+
+<nav class="desk-nav">
+  <div class="c desk-nav-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+      <div class="nav-logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="admisiones.html">Admisiones</a></li>
+      <li><a href="noticias.html">Noticias</a></li>
+      <li><a href="documentos.html">Documentos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="admisiones.html" class="nav-cta-d">Inscribir a mi hijo</a>
+  </div>
+</nav>
+
+<div class="tab-bar">
+  <div class="tab-items">
+    <a href="index.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></a>
+    <a href="noticias.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"/><line x1="17" y1="12" x2="7" y2="12"/></svg><span>Noticias</span></a>
+    <a href="admisiones.html" class="ti ti-cta"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg><span>Inscribir</span></a>
+    <a href="documentos.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Docs</span></a>
+    <a href="contacto.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Contacto</span></a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg">
+    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1400&q=80" alt="Galería Da Vinci School" loading="eager">
+  </div>
+  <div class="page-hero-ov"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-body c">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a><span>›</span>
+      <span style="color:rgba(255,255,255,.7);">Galería</span>
+    </div>
+    <h1 class="page-title">La vida en <em>Da Vinci</em></h1>
+  </div>
+  <div class="page-cut"></div>
+</section>
+
+<!-- FILTERS -->
+<div class="filters-bar">
+  <div class="c filters-inner">
+    <button class="filter-btn active" onclick="filterGallery(this,'all')">Todas</button>
+    <button class="filter-btn" onclick="filterGallery(this,'academico')">Académico</button>
+    <button class="filter-btn" onclick="filterGallery(this,'cultural')">Cultural</button>
+    <button class="filter-btn" onclick="filterGallery(this,'deportivo')">Deportivo</button>
+    <button class="filter-btn" onclick="filterGallery(this,'instalaciones')">Instalaciones</button>
+    <button class="filter-btn" onclick="filterGallery(this,'comunidad')">Comunidad</button>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+  <div class="c">
+    <div class="masonry" id="galleryGrid">
+
+      <div class="gitem" data-cat="academico" data-label="Feria de Ciencias 2024" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" alt="Feria de Ciencias">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Académico</span>Feria de Ciencias 2024</div></div>
+      </div>
+
+      <div class="gitem" data-cat="cultural" data-label="Festival de Arte 2024" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=600&q=80" alt="Festival de Arte">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Cultural</span>Festival de Arte 2024</div></div>
+      </div>
+
+      <div class="gitem" data-cat="instalaciones" data-label="Aulas Da Vinci School" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80" alt="Aulas">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Instalaciones</span>Aulas Da Vinci School</div></div>
+      </div>
+
+      <div class="gitem" data-cat="deportivo" data-label="Campeonato interescolar 2024" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&q=80" alt="Deporte">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Deportivo</span>Campeonato interescolar 2024</div></div>
+      </div>
+
+      <div class="gitem" data-cat="academico" data-label="Clases de inglés" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&q=80" alt="Inglés">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Académico</span>Clases de inglés</div></div>
+      </div>
+
+      <div class="gitem" data-cat="comunidad" data-label="Día del Estudiante 2024" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" alt="Comunidad">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Comunidad</span>Día del Estudiante 2024</div></div>
+      </div>
+
+      <div class="gitem" data-cat="instalaciones" data-label="Biblioteca escolar" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80" alt="Biblioteca">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Instalaciones</span>Biblioteca escolar</div></div>
+      </div>
+
+      <div class="gitem" data-cat="cultural" data-label="Obra de teatro estudiantil" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80" alt="Teatro">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Cultural</span>Obra de teatro estudiantil</div></div>
+      </div>
+
+      <div class="gitem" data-cat="academico" data-label="Laboratorio de ciencias" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=400&q=80" alt="Laboratorio">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Académico</span>Laboratorio de ciencias</div></div>
+      </div>
+
+      <div class="gitem" data-cat="deportivo" data-label="Torneo de atletismo regional" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400&q=80" alt="Atletismo">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Deportivo</span>Torneo de atletismo regional</div></div>
+      </div>
+
+      <div class="gitem" data-cat="comunidad" data-label="Aniversario 15 años" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&q=80" alt="Aniversario">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Comunidad</span>Aniversario 15 años</div></div>
+      </div>
+
+      <div class="gitem" data-cat="instalaciones" data-label="Patio central" onclick="openLightbox(this)">
+        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&q=80" alt="Patio">
+        <div class="gitem-overlay"><div class="gitem-label"><span class="gitem-cat">Instalaciones</span>Patio central</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightboxOnBg(event)">
+  <button class="lb-close" onclick="closeLightbox()">×</button>
+  <button class="lb-nav lb-prev" onclick="navLightbox(-1)">‹</button>
+  <button class="lb-nav lb-next" onclick="navLightbox(1)">›</button>
+  <div class="lb-inner">
+    <img class="lb-img" id="lbImg" src="" alt="">
+    <div class="lb-caption">
+      <div class="lb-caption-text" id="lbCaption"></div>
+      <div class="lb-counter" id="lbCounter"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="c">
+    <div class="foot-grid">
+      <div class="fb">
+        <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+          <img src="logo-davinci.png" width="32" height="32" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+          <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+        </a>
+        <p>Formando personas íntegras, creativas y bilingües desde Pre-Básica hasta 4° Medio.</p>
+      </div>
+      <div class="fc"><h5>El colegio</h5><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="nosotros.html">Bilingüismo</a></li><li><a href="admisiones.html">Admisiones SAE</a></li></ul></div>
+      <div class="fc"><h5>Apoderados</h5><ul><li><a href="documentos.html">Boletines</a></li><li><a href="calendario.html">Calendario</a></li><li><a href="documentos.html">Circulares</a></li></ul></div>
+      <div class="fc"><h5>Más</h5><ul><li><a href="noticias.html">Noticias</a></li><li><a href="galeria.html">Galería</a></li><li><a href="recursos.html">Recursos</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <p>© 2026 Da Vinci School · <a href="index.html">davincischool.cl</a></p>
+      <a href="https://volantin.cl" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:3px;text-decoration:none;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.3px;" onmouseenter="this.style.background='rgba(32,138,174,.15)';this.style.color='white'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.color='rgba(255,255,255,.5)'">
+        <svg width="10" height="10" fill="none" stroke="#208AAE" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Diseñado por <span style="color:#208AAE;font-weight:700;margin-left:2px;">Volantín Creativo</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/56912345678" class="wa" target="_blank">
+  <svg fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// ── FILTER ──
+function filterGallery(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.gitem').forEach(item => {
+    item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
+  });
+}
+
+// ── LIGHTBOX ──
+let currentItems = [];
+let currentIdx = 0;
+
+function getVisibleItems() {
+  return Array.from(document.querySelectorAll('.gitem')).filter(el => el.style.display !== 'none');
+}
+
+function openLightbox(el) {
+  currentItems = getVisibleItems();
+  currentIdx = currentItems.indexOf(el);
+  showSlide(currentIdx);
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function showSlide(idx) {
+  const item = currentItems[idx];
+  const img = item.querySelector('img');
+  document.getElementById('lbImg').src = img.src.replace('w=600','w=1200').replace('w=400','w=900');
+  document.getElementById('lbCaption').textContent = item.dataset.label || '';
+  document.getElementById('lbCounter').textContent = `${idx + 1} / ${currentItems.length}`;
+}
+
+function navLightbox(dir) {
+  currentIdx = (currentIdx + dir + currentItems.length) % currentItems.length;
+  showSlide(currentIdx);
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeLightboxOnBg(e) {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+}
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'ArrowRight') navLightbox(1);
+  if (e.key === 'ArrowLeft') navLightbox(-1);
+  if (e.key === 'Escape') closeLightbox();
+});
+</script>
+</body>
+</html>

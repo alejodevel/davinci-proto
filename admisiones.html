@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+<title>Admisiones — Da Vinci School</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark:  #0C2D3D;
+  --dark2: #081E2A;
+  --red:   #FF0204;
+  --red2:  #CC0103;
+  --blue:  #208AAE;
+  --blue2: #1A6F8C;
+  --cream: #F8F2DC;
+  --gray:  #706566;
+  --glt:   #A09899;
+  --white: #FFFFFF;
+  --off:   #FAFAF8;
+  --rule:  #E8E2D0;
+  --lora:  'Lora', Georgia, serif;
+  --mont:  'Montserrat', sans-serif;
+  --nav:   56px;
+  --tab:   60px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family:var(--mont);
+  background:var(--white); color:var(--dark);
+  overflow-x:hidden; -webkit-text-size-adjust:100%;
+  padding-bottom:var(--tab);
+  padding-top:var(--nav);
+}
+img { display:block; max-width:100%; height:auto; }
+.c { width:100%; max-width:1200px; margin:0 auto; padding:0 clamp(16px,4vw,48px); }
+
+/* ── ANNOUNCEMENT BAR ── */
+.announce-bar {
+  position:fixed; top:0; left:0; right:0; z-index:790;
+  background:var(--blue); padding:8px 16px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  font-size:11px; font-weight:600; color:white; letter-spacing:.2px;
+}
+.announce-bar a { color:white; text-decoration:underline; text-underline-offset:2px; }
+.announce-close { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:rgba(255,255,255,.7); font-size:16px; cursor:pointer; padding:4px; }
+.announce-close:hover { color:white; }
+.announce-dot { width:6px; height:6px; background:var(--cream); border-radius:50%; flex-shrink:0; animation:blinkAnn 2s ease-in-out infinite; }
+@keyframes blinkAnn { 0%,100%{opacity:.8;} 50%{opacity:.3;} }
+body.has-announce { --ah:34px; }
+body.has-announce .mob-topbar, body.has-announce .desk-nav { top:var(--ah); }
+body.has-announce { padding-top:calc(var(--nav) + var(--ah)); }
+
+/* ── MOBILE TOPBAR ── */
+.mob-topbar {
+  position:fixed; top:0; left:0; right:0; z-index:800;
+  height:var(--nav); background:rgba(12,45,61,.97);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex; align-items:center; padding:0 clamp(16px,4vw,20px); gap:10px;
+}
+@media(min-width:960px){ .mob-topbar { display:none; } }
+.logo-txt, .nav-logo-txt { font-family:var(--lora); font-size:15px; font-weight:600; color:white !important; line-height:1.15; }
+.logo-txt span, .nav-logo-txt span { display:block; font-size:9px; font-weight:400; color:rgba(255,255,255,.38) !important; font-family:var(--mont); letter-spacing:1.5px; text-transform:uppercase; }
+
+/* ── DESKTOP NAV ── */
+.desk-nav {
+  display:none; position:fixed; top:0; left:0; right:0; z-index:800;
+  height:var(--nav); background:rgba(12,45,61,.97);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.07); align-items:center;
+}
+.desk-nav-inner { display:flex; align-items:center; justify-content:space-between; width:100%; }
+.nav-links { display:flex; align-items:center; gap:24px; list-style:none; }
+.nav-links a { color:rgba(255,255,255,.6); text-decoration:none; font-size:11px; font-weight:500; letter-spacing:.5px; text-transform:uppercase; transition:color .2s; position:relative; padding-bottom:3px; }
+.nav-links a::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1.5px; background:var(--blue); transform:scaleX(0); transform-origin:left; transition:transform .25s; }
+.nav-links a:hover { color:white; }
+.nav-links a:hover::after { transform:scaleX(1); }
+.nav-links a.active { color:white; }
+.nav-links a.active::after { transform:scaleX(1); background:var(--red); }
+.nav-cta-d { background:var(--red); color:white; padding:8px 18px; border-radius:3px; font-family:var(--mont); font-size:11px; font-weight:700; text-decoration:none; letter-spacing:.3px; transition:all .2s; flex-shrink:0; }
+.nav-cta-d:hover { background:var(--red2); box-shadow:0 4px 16px rgba(255,2,4,.4); transform:translateY(-1px); }
+.desk-nav a { color:white !important; text-decoration:none; }
+@media(min-width:960px){ .desk-nav { display:flex; } body { padding-bottom:0; } }
+
+/* ── TAB BAR ── */
+.tab-bar { position:fixed; bottom:0; left:0; right:0; z-index:800; height:var(--tab); background:rgba(10,26,37,.98); backdrop-filter:blur(16px); border-top:1px solid rgba(255,255,255,.1); padding-bottom:env(safe-area-inset-bottom,0); }
+.tab-items { display:flex; align-items:stretch; height:100%; width:100%; }
+.ti { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; text-decoration:none; color:rgba(255,255,255,.4); font-size:9px; font-weight:600; letter-spacing:.2px; text-transform:uppercase; padding:4px 0; border:none; background:none; -webkit-tap-highlight-color:transparent; transition:color .15s; min-width:0; }
+.ti svg { width:18px; height:18px; flex-shrink:0; }
+.ti span { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; padding:0 2px; }
+.ti:active { color:rgba(255,255,255,.85); }
+.ti:hover:not(.ti-cta) { color:var(--blue); }
+.ti-cta { flex:1.5; background:var(--red); color:white !important; border-radius:12px 12px 0 0; margin:0 4px; box-shadow:0 -4px 20px rgba(255,2,4,.4); font-size:9px; font-weight:700; }
+.ti-cta svg { width:20px; height:20px; }
+.ti-cta:active { background:var(--red2); }
+@media(min-width:960px){ .tab-bar { display:none; } }
+
+/* ── PAGE HERO ── */
+.page-hero { position:relative; overflow:hidden; height:clamp(280px,38vw,440px); display:flex; flex-direction:column; justify-content:flex-end; }
+.page-hero-bg { position:absolute; inset:0; overflow:hidden; }
+.page-hero-bg img { width:100%; height:100%; object-fit:cover; object-position:center 40%; display:block; }
+.page-hero-ov {
+  position:absolute; inset:0;
+  background:
+    linear-gradient(112deg, rgba(12,45,61,.78) 0%, rgba(12,45,61,.48) 45%, rgba(12,45,61,.12) 100%),
+    linear-gradient(to top, rgba(8,18,26,.9) 0%, rgba(8,18,26,.2) 45%, transparent 70%);
+}
+.page-hero-grid { position:absolute; inset:0; pointer-events:none; background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px); background-size:48px 48px; }
+.page-hero-body { position:relative; z-index:2; padding:clamp(24px,4vw,48px) 0 clamp(32px,5vw,52px); }
+.breadcrumb { display:flex; align-items:center; gap:8px; font-size:10px; font-weight:500; color:rgba(255,255,255,.45); text-transform:uppercase; letter-spacing:1px; margin-bottom:12px; }
+.breadcrumb a { color:rgba(255,255,255,.45); text-decoration:none; transition:color .2s; }
+.breadcrumb a:hover { color:white; }
+.breadcrumb span { color:rgba(255,255,255,.25); }
+.page-title { font-family:var(--lora); font-size:clamp(26px,5vw,52px); font-weight:400; color:white; line-height:1.1; }
+.page-title em { font-style:italic; color:var(--cream); }
+.page-subtitle { font-size:clamp(12px,1.4vw,15px); color:rgba(255,255,255,.6); font-weight:300; margin-top:10px; max-width:500px; line-height:1.7; }
+.page-cut { position:absolute; bottom:-1px; left:0; right:0; height:48px; background:var(--white); clip-path:polygon(0 100%,100% 100%,100% 0); z-index:3; }
+
+/* ── SECTIONS ── */
+.s { padding:clamp(56px,8vw,96px) 0; }
+.s-sm { padding:clamp(40px,6vw,64px) 0; }
+.s-dark { background:var(--dark); }
+.s-cream { background:var(--cream); }
+.s-off { background:var(--off); }
+.slabel { display:inline-flex; align-items:center; gap:8px; font-size:10px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+.slabel::before { content:''; width:16px; height:1.5px; background:var(--blue); }
+.slabel-light { color:rgba(255,255,255,.5); }
+.slabel-light::before { background:rgba(255,255,255,.4); }
+.stitle { font-family:var(--lora); font-size:clamp(24px,4vw,42px); font-weight:400; color:var(--dark); line-height:1.2; margin-bottom:14px; }
+.stitle em { font-style:italic; color:var(--blue); }
+.stitle-light { color:white; }
+.stitle-light em { color:var(--cream); }
+.sdesc { font-size:clamp(13px,1.4vw,15px); font-weight:300; color:var(--gray); line-height:1.85; max-width:560px; }
+.sdesc-light { color:rgba(255,255,255,.58); }
+
+/* ── SAE INTRO CARDS ── */
+.sae-intro { display:flex; flex-direction:column; gap:28px; }
+@media(min-width:768px){ .sae-intro { display:grid; grid-template-columns:1fr 1fr; gap:clamp(20px,4vw,48px); align-items:center; } }
+.sae-badge {
+  display:inline-flex; align-items:center; gap:10px;
+  background:rgba(32,138,174,.1); border:1px solid rgba(32,138,174,.25);
+  border-radius:3px; padding:10px 16px; margin-bottom:20px;
+}
+.sae-badge img { width:28px; height:28px; object-fit:contain; }
+.sae-badge span { font-size:11px; font-weight:600; color:var(--blue); letter-spacing:.5px; }
+.sae-info-box {
+  background:var(--dark); border-radius:6px; padding:clamp(24px,4vw,36px);
+  position:relative; overflow:hidden;
+}
+.sae-info-box::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--red), var(--blue));
+}
+.sae-info-box h3 { font-family:var(--lora); font-size:clamp(18px,2vw,24px); font-weight:400; color:white; margin-bottom:12px; }
+.sae-info-box h3 em { font-style:italic; color:var(--cream); }
+.sae-info-box p { font-size:13px; color:rgba(255,255,255,.55); font-weight:300; line-height:1.8; margin-bottom:20px; }
+.sae-link-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  background:var(--red); color:white; padding:12px 24px; border-radius:3px;
+  font-family:var(--mont); font-size:12px; font-weight:700; text-decoration:none;
+  transition:all .2s; letter-spacing:.3px;
+}
+.sae-link-btn:hover { background:var(--red2); transform:translateY(-2px); box-shadow:0 8px 24px rgba(255,2,4,.4); }
+.sae-link-secondary {
+  display:inline-flex; align-items:center; gap:8px;
+  color:rgba(255,255,255,.5); font-size:11px; text-decoration:none;
+  margin-top:12px; font-weight:400; transition:color .2s;
+}
+.sae-link-secondary:hover { color:var(--blue); }
+
+/* ── PROCESO SAE — 4 pasos ── */
+.pasos-grid { display:grid; grid-template-columns:1fr; gap:0; margin-top:32px; position:relative; }
+@media(min-width:480px){ .pasos-grid { grid-template-columns:1fr 1fr; } }
+@media(min-width:640px){ .pasos-grid { grid-template-columns:repeat(4,1fr); } }
+.paso {
+  display:flex; flex-direction:column;
+  padding:clamp(14px,3vw,32px) clamp(12px,2vw,24px);
+  position:relative;
+}
+/* connector line between steps */
+.paso:not(:last-child)::after {
+  content:'';
+  position:absolute;
+  background:var(--rule);
+}
+@media(max-width:639px){
+  .paso:not(:last-child)::after {
+    left:28px; top:100%; width:2px; height:clamp(16px,3vw,24px);
+  }
+}
+@media(min-width:640px){
+  .paso:not(:last-child)::after {
+    top:36px; right:0; width:100%; height:1px; left:50%;
+  }
+}
+.paso-num {
+  width:48px; height:48px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--lora); font-size:20px; font-weight:700;
+  color:white; flex-shrink:0; margin-bottom:16px;
+  position:relative; z-index:1;
+}
+.paso:nth-child(1) .paso-num { background:var(--red); }
+.paso:nth-child(2) .paso-num { background:var(--blue); }
+.paso:nth-child(3) .paso-num { background:#2E7D52; }
+.paso:nth-child(4) .paso-num { background:var(--dark); }
+.paso h4 { font-family:var(--lora); font-size:clamp(15px,1.6vw,17px); font-weight:600; color:var(--dark); margin-bottom:8px; }
+.paso p { font-size:clamp(11px,1.2vw,13px); color:var(--gray); line-height:1.7; font-weight:300; }
+.paso-tag { display:inline-block; margin-top:12px; font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 10px; border-radius:20px; }
+.paso:nth-child(1) .paso-tag { background:rgba(255,2,4,.08); color:var(--red2); }
+.paso:nth-child(2) .paso-tag { background:rgba(32,138,174,.1); color:var(--blue2); }
+.paso:nth-child(3) .paso-tag { background:rgba(46,125,82,.1); color:#2E7D52; }
+.paso:nth-child(4) .paso-tag { background:rgba(12,45,61,.08); color:var(--dark); }
+
+/* ── TIMELINE ── */
+.timeline { margin-top:36px; display:flex; flex-direction:column; gap:0; position:relative; }
+.timeline::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:2px; background:var(--rule); }
+@media(min-width:640px){ .timeline::before { left:50%; transform:translateX(-50%); } }
+.tl-item { display:flex; gap:20px; padding:0 0 32px 52px; position:relative; }
+@media(min-width:640px){
+  .tl-item { width:50%; padding:0 40px 32px 0; }
+  .tl-item:nth-child(even) { align-self:flex-end; margin-left:50%; padding:0 0 32px 40px; }
+}
+.tl-dot {
+  position:absolute; left:12px; top:6px;
+  width:16px; height:16px; border-radius:50%;
+  border:2px solid var(--white);
+  z-index:1;
+}
+@media(min-width:640px){
+  .tl-dot { left:auto; right:-8px; top:6px; }
+  .tl-item:nth-child(even) .tl-dot { right:auto; left:-8px; }
+}
+.tl-item:nth-child(1) .tl-dot { background:var(--blue); }
+.tl-item:nth-child(2) .tl-dot { background:var(--red); }
+.tl-item:nth-child(3) .tl-dot { background:#C4993A; }
+.tl-item:nth-child(4) .tl-dot { background:#2E7D52; }
+.tl-item:nth-child(5) .tl-dot { background:var(--dark); }
+.tl-card { background:white; border:1px solid var(--rule); border-radius:4px; padding:16px 20px; transition:all .2s; }
+.tl-card:hover { border-color:var(--blue); box-shadow:0 4px 16px rgba(32,138,174,.09); }
+.tl-date { font-size:10px; font-weight:700; color:var(--blue); letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; display:block; }
+.tl-card h4 { font-family:var(--lora); font-size:15px; font-weight:600; color:var(--dark); margin-bottom:4px; }
+.tl-card p { font-size:11px; color:var(--gray); font-weight:300; line-height:1.6; }
+
+/* ── FORMULARIO CAPTACIÓN ── */
+.form-layout { display:flex; flex-direction:column; gap:28px; }
+@media(min-width:768px){ .form-layout { display:grid; grid-template-columns:1fr 1fr; gap:clamp(32px,5vw,72px); align-items:start; } }
+.form-reasons { display:flex; flex-direction:column; gap:18px; margin-top:28px; }
+.reason { display:flex; gap:14px; align-items:flex-start; }
+.reason-icon { width:44px; height:44px; border-radius:3px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.reason:nth-child(1) .reason-icon { background:rgba(255,2,4,.08); }
+.reason:nth-child(2) .reason-icon { background:rgba(32,138,174,.1); }
+.reason:nth-child(3) .reason-icon { background:rgba(46,125,82,.1); }
+.reason h4 { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:4px; }
+.reason p { font-size:12px; color:var(--gray); font-weight:300; line-height:1.7; }
+
+.captacion-form {
+  background:var(--dark); border-radius:6px; padding:clamp(24px,4vw,40px);
+  position:relative; overflow:hidden;
+}
+.captacion-form::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--red),var(--blue)); }
+.captacion-form h3 { font-family:var(--lora); font-size:clamp(18px,2vw,22px); font-weight:400; color:white; margin-bottom:6px; }
+.captacion-form h3 em { font-style:italic; color:var(--cream); }
+.captacion-form > p { font-size:12px; color:rgba(255,255,255,.45); margin-bottom:24px; font-weight:300; line-height:1.6; }
+.fg { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.fg label { font-size:9px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,.5); }
+.fg input, .fg select {
+  padding:10px 14px; border:1px solid rgba(255,255,255,.12); border-radius:3px;
+  background:rgba(255,255,255,.07); font-family:var(--mont); font-size:12px;
+  color:white; outline:none; transition:border-color .2s;
+}
+.fg input::placeholder { color:rgba(255,255,255,.28); }
+.fg input:focus, .fg select:focus { border-color:rgba(32,138,174,.6); }
+.fg select option { background:var(--dark); color:white; }
+.fg-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:420px){ .fg-row { grid-template-columns:1fr; } }
+.btn-form-submit {
+  width:100%; padding:13px; background:var(--red); color:white; border:none;
+  border-radius:3px; font-family:var(--mont); font-size:13px; font-weight:700;
+  cursor:pointer; transition:all .2s; letter-spacing:.3px; margin-top:4px;
+}
+.btn-form-submit:hover { background:var(--red2); transform:translateY(-1px); box-shadow:0 6px 20px rgba(255,2,4,.4); }
+.form-privacy { font-size:10px; color:rgba(255,255,255,.28); margin-top:12px; line-height:1.6; text-align:center; }
+
+/* ── FAQ ── */
+.faq-list { display:flex; flex-direction:column; gap:8px; margin-top:36px; max-width:760px; margin-left:auto; margin-right:auto; }
+.faq-item { border:1px solid var(--rule); border-radius:4px; overflow:hidden; }
+.faq-q {
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:18px 20px; cursor:pointer; background:white;
+  font-size:clamp(13px,1.4vw,15px); font-weight:600; color:var(--dark);
+  transition:background .2s; user-select:none;
+}
+.faq-q:hover { background:var(--off); }
+.faq-q.open { color:var(--blue); background:var(--off); }
+.faq-icon { width:20px; height:20px; flex-shrink:0; transition:transform .3s; color:var(--glt); }
+.faq-q.open .faq-icon { transform:rotate(45deg); color:var(--blue); }
+.faq-a {
+  max-height:0; overflow:hidden;
+  transition:max-height .35s ease, padding .3s;
+  padding:0 20px; font-size:13px; color:var(--gray); line-height:1.8; font-weight:300;
+  background:var(--off);
+}
+.faq-a.open { max-height:300px; padding:16px 20px; }
+.faq-a a { color:var(--blue); text-decoration:none; font-weight:500; }
+.faq-a a:hover { text-decoration:underline; }
+
+/* ── CTA FINAL ── */
+.cta-final { background:var(--dark); position:relative; overflow:hidden; text-align:center; padding:clamp(64px,8vw,96px) 0; }
+.cta-final::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, rgba(32,138,174,.2) 0%, transparent 60%); pointer-events:none; }
+.cta-inner { position:relative; z-index:1; max-width:620px; margin:0 auto; }
+.cta-inner h2 { font-family:var(--lora); font-size:clamp(24px,4vw,40px); font-weight:400; color:white; line-height:1.2; margin-bottom:12px; }
+.cta-inner h2 em { font-style:italic; color:var(--cream); }
+.cta-inner p { font-size:clamp(13px,1.4vw,15px); color:rgba(255,255,255,.52); font-weight:300; line-height:1.8; margin-bottom:32px; }
+.cta-btns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+.btn-cta { background:var(--red); color:white; padding:14px 32px; border-radius:3px; font-family:var(--mont); font-size:13px; font-weight:700; text-decoration:none; transition:all .2s; letter-spacing:.3px; }
+.btn-cta:hover { background:var(--red2); transform:translateY(-2px); box-shadow:0 8px 28px rgba(255,2,4,.4); }
+.btn-ghost-d { background:transparent; color:rgba(255,255,255,.6); padding:13px 28px; border-radius:3px; border:1px solid rgba(255,255,255,.2); font-family:var(--mont); font-size:13px; font-weight:400; text-decoration:none; transition:all .2s; }
+.btn-ghost-d:hover { border-color:var(--blue); color:var(--blue); }
+
+/* ── FOOTER ── */
+footer { background:#060E13; padding:36px 0 20px; }
+.foot-grid { display:grid; grid-template-columns:1fr 1fr; gap:28px; padding-bottom:24px; border-bottom:1px solid rgba(255,255,255,.06); }
+@media(min-width:640px){ .foot-grid { grid-template-columns:2fr 1fr 1fr 1fr; } }
+.fb p { font-size:11px; color:rgba(255,255,255,.28); font-weight:300; line-height:1.8; margin-top:12px; max-width:200px; }
+.fc h5 { font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--blue); margin-bottom:12px; }
+.fc ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.fc a { font-size:11px; color:rgba(255,255,255,.3); text-decoration:none; font-weight:300; transition:color .2s; }
+.fc a:hover { color:white; }
+.foot-bot { display:flex; justify-content:space-between; align-items:center; padding-top:16px; flex-wrap:wrap; gap:8px; }
+.foot-bot p { font-size:10px; color:rgba(255,255,255,.18); }
+.foot-bot a { color:rgba(32,138,174,.4); text-decoration:none; }
+
+/* ── WA ── */
+.wa { position:fixed; z-index:700; width:50px; height:50px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:justify-content:center; box-shadow:0 8px 22px rgba(37,211,102,.4); text-decoration:none; transition:transform .2s; bottom:calc(var(--tab) + 16px); right:16px; }
+@media(min-width:960px){ .wa { bottom:24px; right:20px; } }
+.wa:hover { transform:scale(1.1); }
+.wa svg { width:22px; height:22px; }
+
+/* ── REVEAL ── */
+.rv { opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+.rv.on { opacity:1; transform:translateY(0); }
+.rv2 { opacity:0; transform:translateY(22px); transition:opacity .7s .15s ease, transform .7s .15s ease; }
+.rv2.on { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body class="has-announce">
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announce-bar" id="announceBar">
+  <div class="announce-dot"></div>
+  <span>📅 &nbsp;Período de postulación SAE 2026 abierto &mdash; <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank">Postula aquí →</a></span>
+  <button class="announce-close" onclick="document.getElementById('announceBar').remove();document.body.classList.remove('has-announce');" aria-label="Cerrar">×</button>
+</div>
+
+<!-- MOBILE TOPBAR -->
+<header class="mob-topbar">
+  <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+    <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+    <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+  </a>
+</header>
+
+<!-- DESKTOP NAV -->
+<nav class="desk-nav">
+  <div class="c desk-nav-inner">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+      <div class="nav-logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="nosotros.html">Nosotros</a></li>
+      <li><a href="admisiones.html" class="active">Admisiones</a></li>
+      <li><a href="noticias.html">Noticias</a></li>
+      <li><a href="documentos.html">Documentos</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+    </ul>
+    <a href="#interes" class="nav-cta-d" style="background:var(--red2);box-shadow:0 0 0 2px rgba(255,2,4,.3);">Quiero inscribirme</a>
+  </div>
+</nav>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-items">
+    <a href="index.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Inicio</span></a>
+    <a href="noticias.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"/><line x1="17" y1="12" x2="7" y2="12"/></svg><span>Noticias</span></a>
+    <a href="#interes" class="ti ti-cta"><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg><span>Inscribir</span></a>
+    <a href="documentos.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Docs</span></a>
+    <a href="contacto.html" class="ti"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Contacto</span></a>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg">
+    <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1400&q=80" alt="Da Vinci School admisiones" loading="eager">
+  </div>
+  <div class="page-hero-ov"></div>
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-body c">
+    <div class="breadcrumb">
+      <a href="index.html">Inicio</a><span>›</span>
+      <span style="color:rgba(255,255,255,.7);">Admisiones</span>
+    </div>
+    <h1 class="page-title">Tu hijo tiene un lugar<br><em>en Da Vinci</em></h1>
+    <p class="page-subtitle">Las admisiones son a través del SAE del Ministerio de Educación. Te explicamos todo el proceso.</p>
+  </div>
+  <div class="page-cut"></div>
+</section>
+
+<!-- SAE INTRO -->
+<section class="s rv">
+  <div class="c">
+    <div class="sae-intro">
+      <div>
+        <div class="slabel">Sistema de Admisión Escolar</div>
+        <h2 class="stitle">¿Cómo funciona <em>el SAE?</em></h2>
+        <p class="sdesc">El Sistema de Admisión Escolar (SAE) es el proceso oficial del Ministerio de Educación de Chile para postular a establecimientos que reciben financiamiento estatal, como Da Vinci School. Es gratuito, justo y completamente en línea.</p>
+        <p class="sdesc" style="margin-top:14px;">No necesitas hacer fila ni pagar nada. Puedes postular a varios colegios simultáneamente y el sistema prioriza según tus preferencias.</p>
+        <div style="margin-top:24px;display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--off);border-radius:4px;border:1px solid var(--rule);border-left:3px solid var(--blue);">
+          <svg width="20" height="20" fill="none" stroke="var(--blue)" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>
+          <p style="font-size:12px;color:var(--gray);font-weight:300;line-height:1.6;">También puedes <strong style="font-weight:600;color:var(--dark);">anotarte en la lista de espera</strong> en cualquier momento del año, fuera del período de postulación.</p>
+        </div>
+      </div>
+      <div class="rv2">
+        <div class="sae-info-box">
+          <h3>Postula a Da Vinci<br><em>a través del SAE</em></h3>
+          <p>El proceso es 100% digital. Solo necesitas RUT del estudiante, datos del apoderado y seleccionar Da Vinci School entre tus opciones de colegio.</p>
+          <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank" class="sae-link-btn">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Ir al SAE ahora
+          </a>
+          <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank" class="sae-link-secondary" style="display:flex;">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0;margin-top:1px;"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            &nbsp;Anotarse en lista de espera
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 PASOS -->
+<section class="s-sm s-cream rv">
+  <div class="c">
+    <div style="text-align:center;">
+      <div class="slabel" style="justify-content:center;">El proceso paso a paso</div>
+      <h2 class="stitle" style="text-align:center;">Postular es <em>más simple de lo que parece</em></h2>
+    </div>
+    <div class="pasos-grid">
+      <div class="paso">
+        <div class="paso-num">1</div>
+        <h4>Regístrate en el SAE</h4>
+        <p>Crea una cuenta en sistemadeadmisionescolar.cl con el RUT del apoderado y datos del estudiante. Es gratuito.</p>
+        <span class="paso-tag">sistemadeadmisionescolar.cl</span>
+      </div>
+      <div class="paso">
+        <div class="paso-num">2</div>
+        <h4>Selecciona Da Vinci</h4>
+        <p>Busca "Da Vinci School" en el listado de Puerto Montt y agrégalo a tu lista de preferencias en el orden que quieras.</p>
+        <span class="paso-tag">Puedes elegir varios colegios</span>
+      </div>
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <h4>Espera los resultados</h4>
+        <p>El sistema asigna vacantes según el orden de preferencia. Recibirás una notificación con el resultado en tu cuenta.</p>
+        <span class="paso-tag">100% automatizado</span>
+      </div>
+      <div class="paso">
+        <div class="paso-num">4</div>
+        <h4>Acepta la vacante</h4>
+        <p>Si Da Vinci School te asigna una vacante, debes aceptarla dentro del plazo indicado en el sistema para confirmar matrícula.</p>
+        <span class="paso-tag">No pierdas el plazo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FECHAS CLAVE -->
+<section class="s rv">
+  <div class="c">
+    <div class="slabel">Calendario SAE 2026</div>
+    <h2 class="stitle">Fechas que <em>no puedes perder</em></h2>
+    <p class="sdesc">El proceso SAE tiene plazos definidos por el Ministerio de Educación. Te recomendamos postular apenas abre el período — no esperes al último día.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <span class="tl-date">Marzo – Abril 2026</span>
+          <h4>Apertura de postulaciones</h4>
+          <p>Se abre el período oficial de postulación en el sistema SAE. Es el momento de crear tu cuenta y seleccionar Da Vinci School.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <span class="tl-date">Mayo 2026</span>
+          <h4>Cierre de postulaciones</h4>
+          <p>Último día para completar tu postulación en el SAE. Pasada esta fecha no se admiten nuevas postulaciones al período regular.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <span class="tl-date">Agosto 2026</span>
+          <h4>Publicación de resultados</h4>
+          <p>El SAE informa a cada familia el resultado de la asignación. Revisa tu cuenta en el sistema para conocer el colegio asignado.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <span class="tl-date">Agosto – Septiembre 2026</span>
+          <h4>Período de aceptación</h4>
+          <p>Debes ingresar al SAE y aceptar formalmente la vacante asignada. Si no lo haces dentro del plazo, pierdes el cupo.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <span class="tl-date">Noviembre – Diciembre 2026</span>
+          <h4>Matrícula en el colegio</h4>
+          <p>Una vez aceptada la vacante, debes concurrir a Da Vinci School a completar el proceso de matrícula con los documentos requeridos.</p>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--glt);margin-top:20px;font-style:italic;">* Las fechas son referenciales. El calendario oficial es publicado anualmente por el Ministerio de Educación en sistemadeadmisionescolar.cl</p>
+  </div>
+</section>
+
+<!-- FORMULARIO CAPTACIÓN -->
+<section class="s s-cream rv" id="interes">
+  <div class="c">
+    <div class="form-layout">
+      <div>
+        <div class="slabel">Antes de postular</div>
+        <h2 class="stitle">¿Tienes dudas? <em>Te orientamos</em></h2>
+        <p class="sdesc">Déjanos tus datos y un integrante de nuestro equipo se contactará contigo para orientarte en el proceso de postulación, sin compromiso.</p>
+        <div class="form-reasons">
+          <div class="reason">
+            <div class="reason-icon">🎓</div>
+            <div><h4>Te explicamos el proceso SAE</h4><p>Nuestro equipo conoce el proceso al detalle y puede guiarte paso a paso para no perder ningún plazo.</p></div>
+          </div>
+          <div class="reason">
+            <div class="reason-icon">📋</div>
+            <div><h4>Conoce el colegio antes de decidir</h4><p>Podemos coordinar una visita al establecimiento para que tu familia conozca las instalaciones y el equipo docente.</p></div>
+          </div>
+          <div class="reason">
+            <div class="reason-icon">🤝</div>
+            <div><h4>Sin compromiso</h4><p>Registrar tu interés no te obliga a nada. El proceso oficial de admisión siempre es a través del SAE.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="rv2">
+        <div class="captacion-form">
+          <h3>Registra tu <em>interés</em></h3>
+          <p>Te contactamos en 24 horas hábiles para orientarte en el proceso de postulación.</p>
+          <div class="fg-row">
+            <div class="fg"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
+            <div class="fg"><label>Apellido</label><input type="text" placeholder="Tu apellido"></div>
+          </div>
+          <div class="fg"><label>Teléfono / WhatsApp</label><input type="tel" placeholder="+56 9 XXXX XXXX"></div>
+          <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tucorreo@mail.com"></div>
+          <div class="fg">
+            <label>Nivel de interés</label>
+            <select>
+              <option value="">Selecciona el curso de interés</option>
+              <option>Pre-Básica (Pre-K, Kínder)</option>
+              <option>Básica (1° a 4° básico)</option>
+              <option>Básica (5° a 8° básico)</option>
+              <option>Enseñanza Media (1° a 4° medio)</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>¿En qué podemos ayudarte?</label>
+            <select>
+              <option value="">Selecciona una opción</option>
+              <option>Quiero que me expliquen el proceso SAE</option>
+              <option>Quisiera visitar el colegio</option>
+              <option>Tengo preguntas sobre el programa bilingüe</option>
+              <option>Quiero información sobre el Programa PIE</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <button class="btn-form-submit" onclick="this.textContent='✓ Nos contactamos contigo pronto';this.style.background='#2E7D52';this.disabled=true;">Quiero que me contacten</button>
+          <p class="form-privacy">Al enviar este formulario, aceptas que Da Vinci School se ponga en contacto contigo. No compartimos tus datos con terceros.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="s rv">
+  <div class="c" style="max-width:860px;">
+    <div style="text-align:center;">
+      <div class="slabel" style="justify-content:center;">Preguntas frecuentes</div>
+      <h2 class="stitle" style="text-align:center;">Lo que siempre <em>nos preguntan</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          ¿Puedo postular a Da Vinci School directamente sin usar el SAE?
+          <svg class="faq-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">No. Como establecimiento particular subvencionado, Da Vinci School está obligado por ley a recibir alumnos a través del SAE del Ministerio de Educación. No existe un proceso de postulación paralelo ni directo. El SAE garantiza un proceso justo e igualitario para todas las familias.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          ¿Qué pasa si no hay vacantes disponibles?
+          <svg class="faq-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Si no hay vacantes en el período regular, puedes anotarte en la <strong>lista de espera</strong> a través del SAE. También te recomendamos registrar tu interés en nuestro formulario — si se liberan cupos fuera del período formal, te contactaremos directamente.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          ¿Cuánto cuesta estudiar en Da Vinci School?
+          <svg class="faq-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Da Vinci School es un establecimiento <strong>particular subvencionado</strong>, lo que significa que recibe financiamiento del Estado y el costo para las familias es significativamente menor al de un colegio privado. Para conocer el valor exacto del cobro mensual y los aranceles vigentes, contáctanos directamente.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          ¿Desde qué edad puede entrar mi hijo al colegio?
+          <svg class="faq-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Da Vinci School recibe estudiantes desde <strong>Pre-Kínder</strong> (4 años cumplidos al 31 de marzo del año de ingreso). Contamos con Pre-Básica completa (Pre-Kínder y Kínder), Enseñanza Básica (1° a 8°) y Enseñanza Media (1° a 4° Medio).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          ¿Mi hijo con necesidades educativas especiales puede postular?
+          <svg class="faq-icon" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
+        <div class="faq-a">Absolutamente. Da Vinci School cuenta con un <strong>Programa PIE activo</strong> con equipo multidisciplinario (psicólogo, fonoaudiólogo y educador diferencial). Si tu hijo tiene un diagnóstico o necesidades educativas especiales, te recomendamos contactarnos antes de postular para orientarte mejor sobre el apoyo disponible.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final rv">
+  <div class="cta-inner c">
+    <div class="slabel slabel-light" style="justify-content:center;">¿Todo claro?</div>
+    <h2>Da el primer paso hacia <em>Da Vinci</em></h2>
+    <p>El proceso SAE es gratuito, justo y completamente en línea. Postular toma menos de 10 minutos.</p>
+    <div class="cta-btns">
+      <a href="https://www.sistemadeadmisionescolar.cl/" target="_blank" class="btn-cta">Postular vía SAE →</a>
+      <a href="#interes" class="btn-ghost-d">Registrar mi interés</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="c">
+    <div class="foot-grid">
+      <div class="fb">
+        <a href="index.html" style="text-decoration:none;display:flex;align-items:center;gap:10px;">
+          <img src="logo-davinci.png" width="32" height="32" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
+          <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
+        </a>
+        <p>Formando personas íntegras, creativas y bilingües desde Pre-Básica hasta 4° Medio.</p>
+      </div>
+      <div class="fc"><h5>El colegio</h5><ul><li><a href="nosotros.html">Nosotros</a></li><li><a href="nosotros.html">Bilingüismo</a></li><li><a href="nosotros.html">Talleres</a></li><li><a href="nosotros.html">PIE</a></li><li><a href="admisiones.html">Admisiones SAE</a></li></ul></div>
+      <div class="fc"><h5>Apoderados</h5><ul><li><a href="documentos.html">Boletines</a></li><li><a href="calendario.html">Calendario</a></li><li><a href="documentos.html">Circulares</a></li><li><a href="documentos.html">Útiles</a></li></ul></div>
+      <div class="fc"><h5>Más</h5><ul><li><a href="noticias.html">Noticias</a></li><li><a href="galeria.html">Galería</a></li><li><a href="recursos.html">Recursos</a></li><li><a href="contacto.html">Contacto</a></li></ul></div>
+    </div>
+    <div class="foot-bot">
+      <p>© 2026 Da Vinci School · <a href="index.html">davincischool.cl</a></p>
+      <a href="https://volantin.cl" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:3px;text-decoration:none;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.3px;" onmouseenter="this.style.background='rgba(32,138,174,.15)';this.style.color='white'" onmouseleave="this.style.background='rgba(255,255,255,.05)';this.style.color='rgba(255,255,255,.5)'">
+        <svg width="10" height="10" fill="none" stroke="#208AAE" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        Diseñado por <span style="color:#208AAE;font-weight:700;margin-left:2px;">Volantín Creativo</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- WA -->
+<a href="https://wa.me/56912345678" class="wa" target="_blank">
+  <svg fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// Inject real logo
+(function(){
+  const home = null; // logo injected server-side in production
+})();
+
+// FAQ accordion
+function toggleFaq(el){
+  const ans = el.nextElementSibling;
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-q.open').forEach(q=>{ q.classList.remove('open'); q.nextElementSibling.classList.remove('open'); });
+  if(!isOpen){ el.classList.add('open'); ans.classList.add('open'); }
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.07});
+document.querySelectorAll('.rv,.rv2').forEach(el=>obs.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+</script>
+</body>
+</html>
