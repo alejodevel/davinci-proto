@@ -37,8 +37,8 @@ body.has-announce{padding-top:calc(var(--nav) + var(--ah));}
 .logo-txt span,.nav-logo-txt span{display:block;font-size:9px;font-weight:400;color:rgba(255,255,255,.38) !important;font-family:var(--mont);letter-spacing:1.5px;text-transform:uppercase;}
 .desk-nav{display:none;position:fixed;top:0;left:0;right:0;z-index:800;height:var(--nav);background:rgba(12,45,61,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);align-items:center;}
 .desk-nav-inner{display:flex;align-items:center;justify-content:space-between;width:100%;}
-.nav-links{display:flex;align-items:center;gap:24px;list-style:none;}
-.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:.5px;text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:3px;}
+.nav-links{display:flex;align-items:center;gap:16px;list-style:none;}
+.nav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:10px;font-weight:500;letter-spacing:.3px;text-transform:uppercase;transition:color .2s;position:relative;padding-bottom:3px;}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1.5px;background:var(--blue);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
 .nav-links a:hover{color:white;}.nav-links a:hover::after{transform:scaleX(1);}
 .nav-links a.active{color:white;}.nav-links a.active::after{transform:scaleX(1);background:var(--red);}
@@ -179,11 +179,13 @@ footer{background:#060E13;padding:36px 0 20px;}
       <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
       <div class="nav-logo-txt">Da Vinci School<span>Puerto Montt</span></div>
     </a>
-    <ul class="nav-links">
+        <ul class="nav-links">
       <li><a href="nosotros.html">Nosotros</a></li>
       <li><a href="admisiones.html">Admisiones</a></li>
       <li><a href="noticias.html">Noticias</a></li>
       <li><a href="documentos.html" class="active">Documentos</a></li>
+      <li><a href="galeria.html">Galería</a></li>
+      <li><a href="calendario.html">Calendario</a></li>
       <li><a href="contacto.html">Contacto</a></li>
     </ul>
     <a href="admisiones.html" class="nav-cta-d">Inscribir a mi hijo</a>
