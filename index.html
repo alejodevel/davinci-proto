@@ -131,8 +131,8 @@ body.has-announce .desk-nav { top:var(--announce-h); }
 }
 .desk-nav-inner { display:flex; align-items:center; justify-content:space-between; width:100%; }
 .desk-nav a { color:white !important; text-decoration:none; }
-.nav-links { display:flex; align-items:center; gap:16px; list-style:none; }
-.nav-links a { color:rgba(255,255,255,.6); text-decoration:none; font-size:10px; font-weight:500; letter-spacing:.3px; text-transform:uppercase; transition:color .2s; position:relative; padding-bottom:3px; }
+.nav-links { display:flex; align-items:center; gap:24px; list-style:none; }
+.nav-links a { color:rgba(255,255,255,.6); text-decoration:none; font-size:11px; font-weight:500; letter-spacing:.5px; text-transform:uppercase; transition:color .2s; position:relative; padding-bottom:3px; }
 .nav-links a::after { content:''; position:absolute; bottom:0; left:0; right:0; height:1.5px; background:var(--blue); transform:scaleX(0); transform-origin:left; transition:transform .25s ease; }
 .nav-links a:hover { color:white; }
 .nav-links a:hover::after { transform:scaleX(1); }
@@ -695,8 +695,8 @@ body { padding-top:var(--nav); }
 }
 .fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--blue); }
 .fg textarea { min-height:76px; resize:vertical; }
-.fg-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-@media(max-width:360px){ .fg-row { grid-template-columns:1fr; } }
+.fg-row { display:grid; grid-template-columns:1fr; gap:12px; }
+@media(min-width:640px){ .fg-row { grid-template-columns:1fr 1fr; } }
 .btn-sub {
   width:100%; padding:12px; background:var(--red); color:white; border:none;
   border-radius:3px; font-family:var(--mont); font-size:12px; font-weight:700;
@@ -774,6 +774,23 @@ footer { background:#060E13; padding:36px 0 20px; }
   .hero-stats { gap:32px; }
   .sn { font-size:32px; }
 }
+
+/* ── NAV DRAWER ── */
+.nav-drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:810;display:none;}
+.nav-drawer-overlay.open{display:block;}
+.nav-drawer{position:fixed;top:0;right:0;bottom:0;width:min(280px,85vw);background:#0C2D3D;border-left:1px solid rgba(255,255,255,.1);transform:translateX(100%);transition:transform .3s ease;z-index:820;display:flex;flex-direction:column;}
+.nav-drawer.open{transform:translateX(0);}
+.nav-drawer-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:var(--nav);border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;}
+.nav-drawer-close{background:rgba(255,255,255,.08);border:none;border-radius:4px;color:rgba(255,255,255,.7);width:32px;height:32px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.nav-drawer-close:hover{background:rgba(255,255,255,.15);color:white;}
+.nav-drawer-links{flex:1;overflow-y:auto;padding:8px 0;}
+.ndl{display:flex;align-items:center;gap:14px;padding:14px 20px;text-decoration:none;color:rgba(255,255,255,.65);font-family:var(--mont);font-size:12px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;transition:all .2s;border-left:3px solid transparent;}
+.ndl:hover,.ndl.active{color:white;background:rgba(255,255,255,.06);border-left-color:var(--blue);}
+.ndl svg{width:16px;height:16px;flex-shrink:0;opacity:.7;}
+.ndl.active svg{opacity:1;}
+.nav-drawer-cta{margin:12px 16px 20px;padding:13px;background:var(--red);color:white;border-radius:3px;text-decoration:none;text-align:center;font-family:var(--mont);font-size:12px;font-weight:700;letter-spacing:.3px;transition:background .2s;flex-shrink:0;}
+.nav-drawer-cta:hover{background:var(--red2);}
+@media(min-width:960px){.nav-drawer,.nav-drawer-overlay{display:none!important;}}
 </style>
 </head>
 <body class="has-announce">
@@ -792,6 +809,7 @@ footer { background:#060E13; padding:36px 0 20px; }
     <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
     <div class="logo-txt">Da Vinci School<span>Puerto Montt</span></div>
   </a>
+  <button onclick="openNavDrawer()" style="margin-left:auto;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.7);display:flex;align-items:center;padding:0;-webkit-tap-highlight-color:transparent;" aria-label="Menú"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
 </header>
 
 <!-- ══ DESKTOP NAV ══ -->
@@ -801,7 +819,7 @@ footer { background:#060E13; padding:36px 0 20px; }
       <img src="logo-davinci.png" width="36" height="36" alt="Da Vinci School" style="border-radius:50%;object-fit:cover;flex-shrink:0;">
       <div class="nav-logo-txt">Da Vinci School<span>Puerto Montt</span></div>
     </a>
-        <ul class="nav-links">
+    <ul class="nav-links">
       <li><a href="nosotros.html">Nosotros</a></li>
       <li><a href="admisiones.html">Admisiones</a></li>
       <li><a href="noticias.html">Noticias</a></li>
@@ -810,7 +828,7 @@ footer { background:#060E13; padding:36px 0 20px; }
       <li><a href="calendario.html">Calendario</a></li>
       <li><a href="contacto.html">Contacto</a></li>
     </ul>
-    <a href="#admisiones" class="nav-cta-d">Inscribir a mi hijo</a>
+    <a href="admisiones.html" class="nav-cta-d">Inscribir a mi hijo</a>
   </div>
 </nav>
 
@@ -995,7 +1013,7 @@ footer { background:#060E13; padding:36px 0 20px; }
       <a href="recursos.html" class="dcard"><span class="dicon">🔗</span><h4>Recursos educativos</h4><p>Plataformas y materiales de apoyo.</p><div class="dcnt">Khan Academy · +8</div></a>
     </div>
     <div style="text-align:center;margin-top:20px;">
-      <a href="documentos.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;padding:8px 20px;border:1px solid rgba(32,138,174,.3);border-radius:3px;transition:all .2s;" onmouseenter="this.style.background='rgba(32,138,174,.06)'" onmouseleave="this.style.background=''">Ver todos los documentos →</a>
+      <a href="documentos.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 22px;border:1px solid rgba(32,138,174,.35);border-radius:3px;font-family:var(--mont);font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;transition:all .2s;" onmouseenter="this.style.background='rgba(32,138,174,.07)'" onmouseleave="this.style.background=''">Ver todos los documentos →</a>
     </div>
   </div>
 </section>
@@ -1020,8 +1038,8 @@ footer { background:#060E13; padding:36px 0 20px; }
       </div>
     </div>
   <div style="text-align:center;margin-top:24px;">
-      <a href="calendario.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;padding:8px 20px;border:1px solid rgba(32,138,174,.3);border-radius:3px;transition:all .2s;" onmouseenter="this.style.background='rgba(32,138,174,.06)'" onmouseleave="this.style.background=''">Ver calendario completo →</a>
-    </div>
+    <a href="calendario.html" style="display:inline-flex;align-items:center;gap:6px;padding:9px 22px;border:1px solid rgba(32,138,174,.35);border-radius:3px;font-family:var(--mont);font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;transition:all .2s;" onmouseenter="this.style.background='rgba(32,138,174,.07)'" onmouseleave="this.style.background=''">Ver calendario completo →</a>
+  </div>
   </div>
 </section>
 
@@ -1041,7 +1059,7 @@ footer { background:#060E13; padding:36px 0 20px; }
         <a href="#contacto-form" class="mob-form-cta">Enviar un mensaje →</a>
         <div style="margin-top:14px;border-radius:4px;overflow:hidden;border:1px solid var(--rule);">
           <iframe
-            src="https://maps.google.com/maps?q=Jard%C3%ADn+Oriente+1%2C+Calle+Aer%C3%B3dromo%2C+Puerto+Montt%2C+Chile&output=embed&z=16"
+            src="https://maps.google.com/maps?q=Colegio+Da+Vinci+School+Puerto+Montt&output=embed&z=17"
             width="100%" height="180" style="border:0;display:block;"
             allowfullscreen="" loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
@@ -1074,9 +1092,6 @@ footer { background:#060E13; padding:36px 0 20px; }
         <div class="fg"><label>Mensaje</label><textarea placeholder="¿En qué podemos ayudarte?"></textarea></div>
         <button class="btn-sub" onclick="this.textContent='✓ Mensaje enviado';this.style.background='#2E7D52';setTimeout(()=>{this.textContent='Enviar mensaje';this.style.background='';},3000)">Enviar mensaje</button>
       </div>
-    </div>
-  <div style="text-align:center;margin-top:24px;">
-      <a href="contacto.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;padding:8px 20px;border:1px solid rgba(32,138,174,.3);border-radius:3px;transition:all .2s;" onmouseenter="this.style.background='rgba(32,138,174,.06)'" onmouseleave="this.style.background=''">Ir a contacto →</a>
     </div>
   </div>
 </section>
@@ -1137,6 +1152,10 @@ footer { background:#060E13; padding:36px 0 20px; }
   el.innerHTML=h;
 })();
 
+// ── NAV DRAWER ──
+function openNavDrawer(){document.getElementById('navDrawer').classList.add('open');document.getElementById('navOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeNavDrawer(){document.getElementById('navDrawer').classList.remove('open');document.getElementById('navOverlay').classList.remove('open');document.body.style.overflow='';}
+
 // ── SCROLL REVEAL ──
 const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.07});
 document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
@@ -1149,5 +1168,28 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 </script>
+<!-- NAV DRAWER -->
+<div class="nav-drawer-overlay" id="navOverlay" onclick="closeNavDrawer()"></div>
+<div class="nav-drawer" id="navDrawer">
+  <div class="nav-drawer-head">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <img src="logo-davinci.png" width="30" height="30" alt="" style="border-radius:50%;object-fit:cover;">
+      <span style="font-family:var(--lora);font-size:14px;font-weight:600;color:white;">Da Vinci School</span>
+    </div>
+    <button class="nav-drawer-close" onclick="closeNavDrawer()">×</button>
+  </div>
+  <div class="nav-drawer-links">
+    <a href="index.html" class="ndl active" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</a>
+    <a href="nosotros.html" class="ndl" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Nosotros</a>
+    <a href="admisiones.html" class="ndl" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Admisiones</a>
+    <a href="noticias.html" class="ndl" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2z"/><line x1="17" y1="12" x2="7" y2="12"/></svg>Noticias</a>
+    <a href="documentos.html" class="ndl" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Documentos</a>
+    <a href="galeria.html" class="ndl" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Galería</a>
+    <a href="calendario.html" class="ndl" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Calendario</a>
+    <a href="contacto.html" class="ndl" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Contacto</a>
+    <a href="recursos.html" class="ndl" onclick="closeNavDrawer()"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>Recursos</a>
+  </div>
+  <a href="admisiones.html" class="nav-drawer-cta" onclick="closeNavDrawer()">Inscribir a mi hijo →</a>
+</div>
 </body>
 </html>
